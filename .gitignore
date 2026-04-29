@@ -1,0 +1,31 @@
+# 凭证 / 环境
+.env
+.env.local
+.env.*.local
+
+# 操作系统
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python（可选 — 不用 Python 时删除本节）
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Node（可选 — 不用 Node 时删除本节）
+node_modules/
+npm-debug.log*
+
+# 构建产物（按需补充）
+dist/
+build/
+*.egg-info/
