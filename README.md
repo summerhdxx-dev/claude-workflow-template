@@ -1,7 +1,26 @@
 # claude-workflow-template
 
-一套与技术栈无关的"AI 协作 + 文档先行"工作流模板。
-基于一个真实业务项目的工程实践抽象而成。
+> 一套与技术栈无关的「AI 协作 + 文档先行」工作流模板,把 AI 从「自由发挥写一堆」约束成「受规则约束、稳定交付可维护 MVP」的开发成员。
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+![Stack agnostic](https://img.shields.io/badge/stack-agnostic-blue.svg)
+
+基于一个真实业务项目的工程实践抽象而成。配合 Claude Code 等 AI 编码工具使用效果最佳,纯人工照此流程推进同样适用。
+
+---
+
+## 适用 / 不适用
+
+**适合**:
+- 需求边界容易蔓延、想用「明确不做」挡住范围的项目
+- 用 AI 写代码,但受不了它「自由发挥、顺手重构、跳过测试」
+- 有严格状态流转 / 对外协议 / 数据安全要求的后端服务
+- 想让协作约定、技术决策可追溯的团队
+
+**不适合**:
+- 几十行的一次性脚本 / demo(流程开销大于收益)
+- 还在探索期、需求每天推翻重来的原型(文档先行会拖慢)
 
 ---
 
@@ -23,7 +42,7 @@
 ### 1. 克隆模板到新项目目录
 
 ```bash
-git clone --depth=1 <template-repo-url> my-new-project
+git clone --depth=1 https://github.com/summerhdxx-dev/claude-workflow-template.git my-new-project
 cd my-new-project
 rm -rf .git
 git init
@@ -70,7 +89,9 @@ grep -rn "删除以上示例后填写\|替换为本项目" .
 
 ## 参考实现
 
-模板从一个真实业务项目（接收方服务，含外部数据查询 + LLM 调用 + 异步回调）抽象而来，可作为完整填写后的参考样例。
+模板从一个真实业务项目（接收方服务，含外部数据查询 + LLM 调用 + 异步回调）抽象而来。
+
+`examples/sample-comment-service/` 提供了一份**占位符全部填好**的参考样例（评论生成服务），直观展示「模板填完之后长什么样」——四件套怎么写实、状态机/LLM 规则怎么落到具体字段。不知道某一节该填到什么粒度时，去那里看。
 
 ---
 
