@@ -1,111 +1,115 @@
-# 验收标准
+# Acceptance Criteria
 
-本文件给出本项目第一阶段的可验证验收条件。每条都应能用"测试 / 命令 / 人工核对"之一回答"通过 / 不通过"。
+**English** | [简体中文](ACCEPTANCE.zh-CN.md)
 
-## 1. 验收范围
+This file specifies the verifiable acceptance conditions for the project's phase 1. Every item must be answerable as "pass / fail" using one of: automated test / CLI command / manual verification.
 
-> 列出本文件覆盖的验收维度（接口 / 状态机 / 业务逻辑 / 安全 / 性能 / 文档 / 部署 / 端到端）。
+## 1. Acceptance Scope
+
+> List the acceptance dimensions covered by this file
+> (interface / state machine / business logic / security / performance / documentation / deployment / end-to-end).
 >
-> 示例：本文件覆盖以下 11 个维度的验收，与 SPEC.md 对应章节一一对齐 ……
+> Example: This file covers acceptance for the following 11 dimensions, each aligned with the
+> corresponding section of SPEC.md …
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-## 2. 接口验收（如适用）
+## 2. Interface Acceptance (if applicable)
 
-### 2.1 鉴权
+### 2.1 Authentication
 
-> 列出鉴权头缺失 / 错误 / 正确三种情况的预期行为。
+> List expected behavior for three cases: missing auth header / incorrect auth header / correct auth header.
 
-### 2.2 字段校验
+### 2.2 Field Validation
 
-> 按 SPEC.md §3.2 字段表逐字段列出非法值与预期错误码。
+> List invalid values and expected error codes for each field in SPEC.md §3.2.
 >
-> | 字段 | 非法值 | 预期 |
+> | Field | Invalid value | Expected |
 > |---|---|---|
-> | `<X>` | 空 | HTTP 400, error_msg="字段 X 必填" |
+> | `<X>` | empty | HTTP 400, error_msg="field X is required" |
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-### 2.3 幂等
+### 2.3 Idempotency
 
-> 同一 ID 重复请求的处理。
+> Handling of repeated requests with the same ID.
 
-## 3. 状态机验收
+## 3. State Machine Acceptance
 
-> 列出每条合法转移的验收方式（与 SPEC.md §4.2 对齐）。
+> List the acceptance method for each valid transition (aligned with SPEC.md §4.2).
 >
-> | 验收项 | 验证方式 | 通过条件 |
+> | Acceptance Item | Verification Method | Pass Condition |
 > |---|---|---|
-> | <INITIAL> → <STAGE_1> | 单元测试 + 数据库 row 存在 | 状态字段更新且日志表写入 |
-> | 终态不可逆 | 单元测试模拟越界转移 | 抛 IllegalTransitionError |
+> | `<INITIAL>` → `<STAGE_1>` | Unit test + DB row exists | Status field updated and log table written |
+> | Terminal state irreversible | Unit test simulating illegal transition | Raises `IllegalTransitionError` |
 >
-> - [ ] 状态机所有合法转移均有单元测试覆盖
-> - [ ] 终态不可逆已通过自动化拦截
-> - [ ] 状态日志表与主表字段保持一致
+> - [ ] All valid state machine transitions are covered by unit tests
+> - [ ] Terminal state irreversibility is enforced by automated checks
+> - [ ] State log table and master table fields are consistent
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-## 4. 业务逻辑验收
+## 4. Business Logic Acceptance
 
-> 列出每个业务规则的验收用例。
+> List acceptance test cases for each business rule.
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-## 5. LLM 调用验收（如适用）
+## 5. LLM Call Acceptance (if applicable)
 
-> - [ ] prompt caching 命中率 > 0
-> - [ ] 输入脱敏校验拒绝违反字段
-> - [ ] prompt injection 用例输出仍合法
-> - [ ] 输出解析失败重试 1 次后仍失败 → 标 FAILED
-> - [ ] 调用日志完整（模型 / token / 耗时）+ 不含 prompt 全文
+> - [ ] Prompt caching hit rate > 0
+> - [ ] Input redaction validation rejects violating fields
+> - [ ] Prompt injection test cases still produce valid output
+> - [ ] Parse failure after 1 retry → task marked FAILED
+> - [ ] Call log is complete (model / tokens / latency) + does not contain full prompt text
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-## 6. 对外推送 / 输出验收（如适用）
+## 6. Outbound Push / Output Acceptance (if applicable)
 
-> 成功 payload 形状 / 失败 payload 形状 / 重试策略 / 持续不可达后任务行保留。
+> Success payload shape / failure payload shape / retry strategy / task row retained after sustained unreachability.
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-## 7. 数据安全验收
+## 7. Data Security Acceptance
 
-> - [ ] 凭证不入 git（grep 全历史 0 命中）
-> - [ ] 凭证不入日志（grep 日志输出 0 命中）
-> - [ ] 敏感字段不入第三方调用
-> - [ ] 数据存储权限符合 §9 项目专用规则
+> - [ ] Credentials not committed to git (grep full history → 0 hits)
+> - [ ] Credentials not written to logs (grep log output → 0 hits)
+> - [ ] Sensitive fields not passed to third-party calls
+> - [ ] Data store permissions comply with §9 project-specific rules
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-## 8. 性能验收
+## 8. Performance Acceptance
 
-> - [ ] ack 延迟 P95 < <X>s
-> - [ ] 全链路 P95 < <Y>s（仅 SQL）/ <Z>s（含 LLM）
-> - [ ] 启动恢复扫描 < <W>s（N 条任务）
+> - [ ] Ack latency P95 < `<X>`s
+> - [ ] Full-chain P95 < `<Y>`s (SQL only) / `<Z>`s (including LLM)
+> - [ ] Startup recovery scan < `<W>`s (N tasks)
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-## 9. 文档验收
+## 9. Documentation Acceptance
 
-> - [ ] PROJECT.md / SPEC.md / TASKS.md / ACCEPTANCE.md 全部填写完整
-> - [ ] docs/architecture.md / api-conventions.md / runbook.md 与代码一致
-> - [ ] docs/decisions.md 含本阶段所有 L3 改动决策
-> - [ ] CHANGELOG.md 含本阶段交付摘要
+> - [ ] PROJECT.md / SPEC.md / TASKS.md / ACCEPTANCE.md all fully populated
+> - [ ] `docs/architecture.md` / `api-conventions.md` / `runbook.md` consistent with code
+> - [ ] `docs/decisions.md` contains all L3 change decisions from this phase
+> - [ ] `CHANGELOG.md` contains delivery summary for this phase
 
-## 10. 部署验收
+## 10. Deployment Acceptance
 
-> - [ ] Dockerfile 构建通过
-> - [ ] `GET /health` 返回 ok
-> - [ ] 启动恢复在容器重启后生效
+> - [ ] Dockerfile build passes
+> - [ ] `GET /health` returns ok
+> - [ ] Startup recovery takes effect after container restart
 
-## 11. 端到端用例
+## 11. End-to-End Test Cases
 
-> 编号 11.1 / 11.2 / ... 列出所有端到端用例。
+> Number as 11.1 / 11.2 / … and list all end-to-end test cases.
 >
-> 示例：
-> - 11.1：完整成功路径，断言 `<TERMINAL_OK>`
-> - 11.2：外部数据源不可达 → `<TERMINAL_FAIL>`
-> - 11.3：LLM 不可达 → `<TERMINAL_FAIL>`（如适用）
-> - 11.4：重复 ID 请求 → 第 1 次 200，后续 409
-> - 11.5：进程重启恢复
+> Example:
+> - 11.1: Full success path, assert `<TERMINAL_OK>`
+> - 11.2: External data source unreachable → `<TERMINAL_FAIL>`
+> - 11.3: LLM unreachable → `<TERMINAL_FAIL>` (if applicable)
+> - 11.4: Duplicate ID request → first request 200, subsequent requests 409
+> - 11.5: Process restart recovery
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->

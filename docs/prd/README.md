@@ -1,13 +1,15 @@
 # docs/prd/
 
-本目录存放产品需求文档(PRD)与业务逻辑原始资料,供 `CLAUDE.md` 第 3 步「按需补充阅读」时引用。
+**English** | [简体中文](README.zh-CN.md)
 
-模板默认**不带**具体 PRD 文件,只保留本说明。请按项目实际情况新建:
+This directory holds product requirement documents (PRDs) and business-logic source materials, referenced during the "supplementary reading" step (Step 3) described in `CLAUDE.md`.
 
-- `prd-v1.md` — 第一阶段产品需求文档(业务背景、用户场景、功能清单)
-- `业务逻辑文档.md` — 业务特定逻辑、数据过滤规则等(如适用)
-- `<对接文档>.md` — 对外接收 / 回调协议的调用方原版资料(如适用)
+The template ships **without** any concrete PRD files — only this readme. Create files here as your project requires:
 
-> 说明:`CLAUDE.md` 第 3 步和第 4 节文档优先级中引用的就是本目录下的文件。
-> 在新建对应文件之前,这些引用属于「按需创建」,不是缺失。
-> 这些资料是「我方实现的输入」,优先级低于 `PROJECT.md` / `SPEC.md`(见 `CLAUDE.md` 第 4 节)。
+- `prd-v1.md` — Phase 1 product requirements document (business background, user scenarios, feature list)
+- `业务逻辑文档.md` — Project-specific business logic, data filtering rules, etc. (if applicable)
+- `<integration-doc>.md` — Caller-provided original specification for inbound / callback protocols (if applicable)
+
+> Note: the files referenced in `CLAUDE.md` Step 3 and Section 4 (document priority) are the files in this directory.
+> Until those files are created, the references are "create on demand" — not missing.
+> These materials serve as **inputs to our implementation** and carry lower priority than `PROJECT.md` / `SPEC.md` (see `CLAUDE.md` Section 4).

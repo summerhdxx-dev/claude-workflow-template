@@ -1,45 +1,50 @@
 # claude-workflow-template
 
-> 一套与技术栈无关的「AI 协作 + 文档先行」工作流模板,把 AI 从「自由发挥写一堆」约束成「受规则约束、稳定交付可维护 MVP」的开发成员。
+**English** | [简体中文](README.zh-CN.md)
+
+> A stack-agnostic, documentation-first workflow template for AI collaboration — it turns the AI from "improvises and writes a pile of code" into a constrained engineering teammate that ships maintainable MVPs reliably.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 ![Stack agnostic](https://img.shields.io/badge/stack-agnostic-blue.svg)
 
-基于一个真实业务项目的工程实践抽象而成。配合 Claude Code 等 AI 编码工具使用效果最佳,纯人工照此流程推进同样适用。
+Distilled from the engineering practice of a real production project. Works best paired with AI coding tools like Claude Code, and is equally usable when followed by humans alone.
 
 ---
 
-## 适用 / 不适用
+## When to use / not use
 
-**适合**:
-- 需求边界容易蔓延、想用「明确不做」挡住范围的项目
-- 用 AI 写代码,但受不了它「自由发挥、顺手重构、跳过测试」
-- 有严格状态流转 / 对外协议 / 数据安全要求的后端服务
-- 想让协作约定、技术决策可追溯的团队
+**Good fit:**
+- Projects where scope creep is a real risk and you want an explicit "out of scope" line to hold it back
+- You write code with AI but can't stand it "improvising, refactoring on a whim, skipping tests"
+- Backend services with strict state transitions / external protocols / data-security requirements
+- Teams that want collaboration conventions and technical decisions to be traceable
 
-**不适合**:
-- 几十行的一次性脚本 / demo(流程开销大于收益)
-- 还在探索期、需求每天推翻重来的原型(文档先行会拖慢)
-
----
-
-## 它是什么
-
-模板提供：
-- `CLAUDE.md` — AI 协作工作规则（25 节，§9 / §24 留占位）
-- `PROJECT.md` / `SPEC.md` / `TASKS.md` / `ACCEPTANCE.md` — 四件套文档骨架
-- `docs/` — 架构 / 接口 / 决策 / 工具 / 运维 / bug 模板
-- `evals/` — LLM 评估占位（不调 LLM 可删）
-- `CHANGELOG.md` / `.gitignore` — 通用辅助文件
-
-模板**不**提供：源码骨架、依赖管理、Dockerfile、CI 配置 — 这些由具体技术栈决定。
+**Poor fit:**
+- One-off scripts / demos of a few dozen lines (process overhead outweighs the benefit)
+- Early-stage prototypes whose requirements are overturned daily (documentation-first slows you down)
 
 ---
 
-## 怎么用（5 分钟起步）
+## What it is
 
-### 1. 克隆模板到新项目目录
+The template provides:
+- `CLAUDE.md` — AI collaboration rules (25 sections; §9 / §24 left as placeholders)
+- `PROJECT.md` / `SPEC.md` / `TASKS.md` / `ACCEPTANCE.md` — the four-document skeleton
+- `docs/` — architecture / API / decisions / tools / runbook / bug templates
+- `evals/` — LLM evaluation placeholder (delete if you don't call an LLM)
+- `CHANGELOG.md` / `.gitignore` — generic helper files
+
+The template does **not** provide: source-code scaffolding, dependency management, Dockerfile, or CI config — those are decided by your specific stack.
+
+> Bilingual note: every core document ships in two versions, `*.md` (English) and `*.zh-CN.md` (Chinese).
+> When you use the template, **keep the language your team works in and delete the other**.
+
+---
+
+## How to use (5-minute start)
+
+### 1. Clone the template into a new project directory
 
 ```bash
 git clone --depth=1 https://github.com/summerhdxx-dev/claude-workflow-template.git my-new-project
@@ -48,53 +53,53 @@ rm -rf .git
 git init
 ```
 
-### 2. 全局搜替换占位符
+### 2. Grep for placeholders
 
-模板里所有待填位置可一次性 grep 到：
+Every spot that needs filling can be located in one pass:
 
 ```bash
-grep -rn "删除以上示例后填写\|替换为本项目" .
+grep -rni "DELETE the example above\|REPLACE with your project\|删除以上示例后填写\|替换为本项目" .
 ```
 
-### 3. 按顺序填写四件套（**这是关键 — 不要跳过、不要打乱顺序**）
+### 3. Fill the four documents in order (**this is key — don't skip or reorder**)
 
-1. 先写 `PROJECT.md`：项目目标、角色、范围、明确不做、风险（约 20 分钟）
-2. 再拆 `TASKS.md` 阶段 1：项目初始化任务（约 10 分钟）
-3. 再写 `SPEC.md` §1-§3（总览、范围、核心接口/协议）（约 30 分钟）
-4. 再写 `ACCEPTANCE.md` §1（验收范围）+ §2（核心接口验收）（约 10 分钟）
-5. 第一次 commit：`docs: 项目初始化文档落盘`
+1. Write `PROJECT.md` first: goal, role, scope, out-of-scope, risks (~20 min)
+2. Then break down `TASKS.md` phase 1: project bootstrap tasks (~10 min)
+3. Then write `SPEC.md` §1–§3 (overview, scope, core interface/protocol) (~30 min)
+4. Then write `ACCEPTANCE.md` §1 (acceptance scope) + §2 (core interface acceptance) (~10 min)
+5. First commit: `docs: land initial project documentation`
 
-### 4. 按需调整 CLAUDE.md
+### 4. Tailor CLAUDE.md as needed
 
-- **必填**：§9 项目专用规则（数据存储读写权限、敏感字段、专用红线）
-- **如调用 LLM**：§24 LLM 调用规则；否则**整节删除**
-- **§11 任务状态机**：把 `<INITIAL> / <STAGE_1> / ... / <TERMINAL_OK>` 占位改成本项目实际状态名
-- **§12 技术栈红线**：列出本项目允许引入的框架清单
-- **§25 文档同步矩阵**：按本项目实际章节号补全表格
+- **Required**: §9 project-specific rules (data-store read/write permissions, sensitive fields, project red lines)
+- **If you call an LLM**: §24 LLM invocation rules; otherwise **delete the whole section**
+- **§11 task state machine**: replace `<INITIAL> / <STAGE_1> / ... / <TERMINAL_OK>` placeholders with your project's real state names
+- **§12 tech-stack red lines**: list the frameworks your project is allowed to introduce
+- **§25 doc-sync matrix**: complete the table with your project's actual section numbers
 
-### 5. 跑 CLAUDE.md §2 核心执行流程
+### 5. Run the CLAUDE.md §2 core execution flow
 
-把 `TASKS.md` 阶段 1 的第一个 `[ ]` 任务交给 AI（或自己），按 `CLAUDE.md §2` 第 1-7 步推进。
-
----
-
-## 设计哲学
-
-- **文档先行**：先把"要做什么 / 不做什么 / 怎么算完"写清楚，再动代码
-- **稳定 > 抽象**：MVP 阶段优先正确性、可维护性、可测试性，不追求架构炫技
-- **AI 受约束**：模板给 AI（含 Claude Code）一套强约束，避免"自由发挥写一堆"
-- **决策可追溯**：每条非显然取舍写到 `docs/decisions.md`
+Hand the first `[ ]` task of `TASKS.md` phase 1 to the AI (or yourself), and drive it through steps 1–7 of `CLAUDE.md §2`.
 
 ---
 
-## 参考实现
+## Design philosophy
 
-模板从一个真实业务项目（接收方服务，含外部数据查询 + LLM 调用 + 异步回调）抽象而来。
-
-`examples/sample-comment-service/` 提供了一份**占位符全部填好**的参考样例（评论生成服务），直观展示「模板填完之后长什么样」——四件套怎么写实、状态机/LLM 规则怎么落到具体字段。不知道某一节该填到什么粒度时，去那里看。
+- **Documentation first**: nail down "what to do / what not to do / what 'done' means" before touching code
+- **Stability > abstraction**: in the MVP phase, prioritize correctness, maintainability, and testability over architectural flair
+- **Constrained AI**: the template gives the AI (incl. Claude Code) a strong set of constraints to avoid "improvising a pile of code"
+- **Traceable decisions**: every non-obvious trade-off goes into `docs/decisions.md`
 
 ---
 
-## 模板自身的版本
+## Reference implementation
 
-参见 `CHANGELOG.md`。模板会随实践持续演进；新项目用了模板后，**不需要**追上模板的后续更新（除非有重大缺陷修复）。
+The template is distilled from a real production project (a receiver-side service with external data queries + LLM calls + async callbacks).
+
+`examples/sample-comment-service/` provides a **fully filled-in** reference sample (a comment-generation service) that shows what the template looks like once completed — how the four documents read when written for real, and how state-machine / LLM rules map to concrete fields. When you're unsure how detailed a section should be, look there.
+
+---
+
+## Versioning of the template itself
+
+See `CHANGELOG.md`. The template keeps evolving with practice; once a new project adopts it, you do **not** need to chase the template's later updates (unless there's a critical fix).

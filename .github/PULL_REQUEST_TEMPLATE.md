@@ -1,19 +1,19 @@
-## 改了什么
+## What changed
 
-> 一句话说明本次 PR 的改动。
+> One sentence describing this PR's change.
 
-## 为什么改
+## Why
 
-> 原内容在什么场景下出了问题 / 不够好用。修改 `CLAUDE.md` 规则时务必填写。
+> In what scenario did the original content break down / fall short. Required when modifying `CLAUDE.md` rules.
 
-## 影响哪些文件
+## Files affected
 
-> 列出改动涉及的文件 / 章节。
+> List the files / sections this change touches.
 
-## 自检清单
+## Self-check
 
-- [ ] 一个 PR 只做一件事,没有混入不相关改动
-- [ ] 保持技术栈无关(语言 / 框架相关内容放在 `examples/`)
-- [ ] 占位符标记统一(`<尖括号>` + `删除以上示例后填写` / `替换为本项目`)
-- [ ] 改动涉及的文档相互引用对得上(被引用的文件 / 章节真实存在)
-- [ ] commit message 风格与仓库历史一致(中文描述 + 英文 type 前缀)
+- [ ] One PR, one thing — no unrelated changes mixed in
+- [ ] Stays technology-stack-agnostic (language / framework specifics go in `examples/`)
+- [ ] Placeholder markers are consistent (`<angle brackets>` + `DELETE the example above and fill in` / `REPLACE with your project`)
+- [ ] Cross-references in touched docs resolve (referenced files / sections actually exist)
+- [ ] Commit message style matches repo history (English type prefix + description)

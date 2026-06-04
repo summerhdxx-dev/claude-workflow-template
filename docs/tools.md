@@ -1,58 +1,60 @@
-# 依赖工具清单
+# Dependency & Tool Inventory
 
-本文件列出本项目运行 / 开发 / 部署所依赖的全部外部工具及版本要求。
+**English** | [简体中文](tools.zh-CN.md)
 
-## 1. 开发工具
+This document lists every external tool required to run, develop, and deploy this project, along with version requirements.
 
-> 语言运行时 / 包管理器 / lint / 类型检查 / 测试框架。
+## 1. Development Tools
+
+> Language runtime / package manager / linter / type checker / test framework.
 >
-> 示例：
-> | 工具 | 版本 | 用途 |
+> Example:
+> | Tool | Version | Purpose |
 > |---|---|---|
-> | <语言运行时> | X.Y | 主语言 |
-> | <包管理器> | A.B | 依赖管理 |
-> | <lint 工具> | C.D | 代码风格 |
-> | <类型检查工具> | E.F | 静态类型 |
-> | <测试框架> | G.H | 单元 / 集成测试 |
+> | `<language runtime>` | X.Y | Primary language |
+> | `<package manager>` | A.B | Dependency management |
+> | `<lint tool>` | C.D | Code style enforcement |
+> | `<type checker>` | E.F | Static type checking |
+> | `<test framework>` | G.H | Unit / integration tests |
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in your project content -->
 
-## 2. 运行时依赖
+## 2. Runtime Dependencies
 
-> 核心运行库 + 版本（与 PROJECT.md 技术约束 + SPEC.md §10 技术栈对齐）。
+> Core runtime libraries + versions (aligned with PROJECT.md technical constraints and SPEC.md §10 tech stack).
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in your project content -->
 
-## 3. 外部服务
+## 3. External Services
 
-> 数据库 / 消息队列 / 第三方 API / LLM 提供方等外部服务依赖。
+> Database / message queue / third-party APIs / LLM provider and other external service dependencies.
 >
-> 示例：
-> | 服务 | 用途 | 访问方式 |
+> Example:
+> | Service | Purpose | Access method |
 > |---|---|---|
-> | <持久化数据存储> | 业务数据查询 | 内网，只读账号 |
-> | <任务库> | 任务持久化 | 独立 schema |
-> | <LLM 提供方>（如适用）| 文本生成 | 公网 HTTPS |
+> | `<persistent data store>` | Business data queries | Internal network, read-only account |
+> | `<task store>` | Task persistence | Dedicated schema |
+> | `<LLM provider>` (if applicable) | Text generation | Public HTTPS |
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in your project content -->
 
-## 4. CI / 部署工具
+## 4. CI / Deployment Tools
 
-> 构建 / 镜像 / 部署链路。
+> Build / image / deployment pipeline.
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in your project content -->
 
-## 5. 凭证清单
+## 5. Credential Inventory
 
-> **不写凭证值**。仅列出"凭证名 / 用途 / 存储位置 / 谁能拿 / 轮换周期"。
+> **Do not record credential values here.** List only: credential name / purpose / storage location / who may access it / rotation cycle.
 >
-> 示例：
-> | 凭证名 | 用途 | 存储位置 | 责任人 | 轮换周期 |
+> Example:
+> | Credential | Purpose | Storage | Owner | Rotation cycle |
 > |---|---|---|---|---|
-> | <DB 密码> | 外部数据存储连接 | K8s Secret | DBA | 季度 |
-> | <API Token> | 鉴权 | K8s Secret | 后端 | 半年 |
-> | <LLM API Key> | LLM 调用 | K8s Secret | 后端 | 按需 |
+> | `<DB password>` | External data store connection | K8s Secret | DBA | Quarterly |
+> | `<API Token>` | Authentication | K8s Secret | Backend | Bi-annually |
+> | `<LLM API Key>` | LLM calls | K8s Secret | Backend | As needed |
 >
-> **凭证值禁止写入本文件、commit message、日志、prompt**。
+> **Credential values must never appear in this file, commit messages, logs, or prompts.**
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in your project content -->

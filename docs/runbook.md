@@ -1,66 +1,68 @@
-# 上线 checklist + 运维操作手册
+# Release Checklist + Operations Runbook
 
-本文件给运维 / 值班 / 上线人员阅读。
+**English** | [简体中文](runbook.zh-CN.md)
 
-## 1. 上线前 checklist
+This document is intended for operations / on-call / release engineers.
 
-> - [ ] 所有 TASKS.md 阶段 1-N 已 `[x]`
-> - [ ] ACCEPTANCE.md 全部 `[x]`
-> - [ ] 测试全绿（单元 + 集成 + E2E + evals 如适用）
-> - [ ] git log 无凭证泄漏
-> - [ ] 镜像构建通过、本地启动 `GET /health` 返回 ok
-> - [ ] 凭证已注入 K8s Secret（见 docs/tools.md §5）
-> - [ ] CHANGELOG.md 含发布说明
+## 1. Pre-release Checklist
 
-## 2. 部署步骤
+> - [ ] All Phase 1–N tasks in TASKS.md are marked `[x]`
+> - [ ] All items in ACCEPTANCE.md are `[x]`
+> - [ ] All tests pass (unit + integration + E2E + evals if applicable)
+> - [ ] `git log` contains no credential leaks
+> - [ ] Image build succeeds; local startup returns `200 OK` for `GET /health`
+> - [ ] Credentials injected into K8s Secret (see docs/tools.md §5)
+> - [ ] CHANGELOG.md includes release notes
 
-> 列出从镜像构建到流量切换的完整步骤。
+## 2. Deployment Steps
 
-<!-- 删除以上示例后填写本项目内容 -->
+> List every step from image build to traffic cutover.
 
-## 3. 健康检查
+<!-- DELETE the example above and fill in your project content -->
 
-> `GET /health` 路径 + 预期响应 + 探针配置。
+## 3. Health Check
 
-## 4. 常见运维操作
+> `GET /health` path + expected response + probe configuration.
 
-### 4.1 重启服务
+## 4. Common Operations
 
-### 4.2 查看日志
+### 4.1 Restart the Service
 
-> 日志在哪 / 如何过滤 / 关键字段。
+### 4.2 View Logs
 
-### 4.3 手动重发失败任务（如适用）
+> Where logs live / how to filter / key fields.
 
-> 手动把 `<TERMINAL_FAIL>` 重置回 `<INITIAL>` 的 SQL 模板 + retry_count 处理。
+### 4.3 Manually Replay a Failed Task (if applicable)
 
-### 4.4 凭证轮换
+> SQL template for resetting a `<TERMINAL_FAIL>` record back to `<INITIAL>` + retry_count handling.
 
-> 步骤：从 Secret 管理系统拿新凭证 → 滚动重启 → 验证。
+### 4.4 Credential Rotation
 
-### 4.5 数据库迁移
+> Steps: retrieve new credential from the secrets management system → rolling restart → verify.
 
-> 迁移工具 + 命令 + 回滚方式。
+### 4.5 Database Migration
 
-<!-- 删除以上示例后填写本项目内容 -->
+> Migration tool + command + rollback procedure.
 
-## 5. 故障排查
+<!-- DELETE the example above and fill in your project content -->
 
-> 常见错误模式 + 排查步骤。
+## 5. Troubleshooting
+
+> Common error patterns and diagnostic steps.
 >
-> | 现象 | 可能原因 | 排查命令 |
+> | Symptom | Possible cause | Diagnostic command |
 > |---|---|---|
-> | `GET /health` 返回 degraded | DB 不通 | 看日志 / DB ping |
-> | 大量 `<TERMINAL_FAIL>` | 外部依赖故障 | 看 error_msg 分布 |
+> | `GET /health` returns degraded | DB unreachable | Check logs / DB ping |
+> | High volume of `<TERMINAL_FAIL>` | External dependency outage | Inspect error_msg distribution |
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in your project content -->
 
-## 6. 回滚预案
+## 6. Rollback Plan
 
-> 如果新版本上线后出现 X 问题，如何回滚到上一版本。
+> If the new release causes issue X, how to roll back to the previous version.
 >
-> - [ ] 镜像回滚命令
-> - [ ] 数据库迁移回滚（如适用）
-> - [ ] 流量切换
+> - [ ] Image rollback command
+> - [ ] Database migration rollback (if applicable)
+> - [ ] Traffic cutover
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in your project content -->

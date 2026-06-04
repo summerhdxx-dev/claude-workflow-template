@@ -1,107 +1,109 @@
-# 架构说明
+# Architecture
 
-本文件用于说明本项目第一阶段 MVP 的工程落地方式、代码组织边界、状态机落位规则、依赖关系和测试策略。
+**English** | [简体中文](architecture.zh-CN.md)
 
-如本文件与 `PROJECT.md` / `SPEC.md` 冲突，以 `PROJECT.md` / `SPEC.md` 为准。
+This document describes the engineering implementation approach, code-organization boundaries, state-machine placement rules, dependency structure, and test strategy for the Phase 1 MVP.
 
-## 1. 架构目标
+If this document conflicts with `PROJECT.md` / `SPEC.md`, the latter takes precedence.
 
-> 列出 4-6 条架构目标，与 PROJECT.md "第一阶段 MVP 目标"对齐到实现层。
+## 1. Architecture Goals
+
+> List 4–6 goals aligned with the "Phase 1 MVP Objectives" in PROJECT.md, down to the implementation level.
 >
-> 示例：
-> 1. 支撑 `<对外接口路径>` 端到端 MVP 闭环
-> 2. 支撑严格的状态流转与日志留痕
-> 3. 支撑外部数据存储只读查询 + 任务库读写
-> 4. 支撑（如适用）LLM 异步调用，含脱敏与 injection 防护
-> 5. 保证代码结构清晰，避免业务逻辑分散和失控
+> Example:
+> 1. Support an end-to-end MVP loop for `<external API path>`
+> 2. Enforce strict state transitions with full audit trails
+> 3. Support read-only queries against the external data store plus read/write access to the task store
+> 4. Support (if applicable) async LLM calls with input sanitization and injection protection
+> 5. Keep the codebase structure clean and prevent business logic from spreading out of control
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in your project content -->
 
-## 2. 模块边界（与 SPEC.md §1.3 对齐）
+## 2. Module Boundaries (aligned with SPEC.md §1.3)
 
-> 用代码块画一棵 src/ 目录树，每个模块给一行注释说明职责。
+> Draw a `src/` directory tree in a code block; add a one-line comment per module explaining its responsibility.
 >
-> 示例：
+> Example:
 > ```
 > src/<package>/
-> ├── main.py             # 应用入口 + lifespan
-> ├── settings.py         # 配置加载
-> ├── api/                # 对外接口
-> ├── tasks/              # 任务状态机 + worker
-> ├── data/               # 持久化层
-> ├── <ai/>               # （如适用）LLM 调用
-> ├── callback/           # 对外推送
-> └── observability/      # 日志
+> ├── main.py             # Application entry point + lifespan
+> ├── settings.py         # Configuration loading
+> ├── api/                # External-facing API layer
+> ├── tasks/              # Task state machine + worker
+> ├── data/               # Persistence layer
+> ├── <ai/>               # (if applicable) LLM calls
+> ├── callback/           # Outbound push / callbacks
+> └── observability/      # Logging
 > ```
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in your project content -->
 
-## 3. 数据流（核心 N 步）
+## 3. Data Flow (Core N Steps)
 
-> 用 ASCII 流程图展示从请求到达到最终回调的关键步骤。
+> Use an ASCII flow diagram to show key steps from incoming request to final callback.
 >
-> 示例：
+> Example:
 > ```
-> 外部请求 → 鉴权 + 字段校验 + 幂等 → 写 <INITIAL> → 立即 ack
->      → 异步 worker → 业务查询 → 状态推进
->      → （如适用）LLM 调用 → 状态推进
->      → 对外推送 → 状态推进到 <TERMINAL_OK>
+> Inbound request → Auth + field validation + idempotency check → write <INITIAL> → immediate ack
+>      → async worker → business query → advance state
+>      → (if applicable) LLM call → advance state
+>      → outbound push → advance state to <TERMINAL_OK>
 > ```
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in your project content -->
 
-## 4. 状态机落位
+## 4. State Machine Placement
 
-> 详见 SPEC.md §4。本节强调**实现红线**：
-> - 唯一入口：所有状态变更必须经 `<状态机模块>::transition()`
-> - 业务模块禁止直接 UPDATE 状态
-> - 终态不可逆
+> See SPEC.md §4 for the full definition. This section highlights **implementation hard rules**:
+> - Single entry point: all state changes must go through `<state-machine module>::transition()`
+> - Business modules must not directly UPDATE the status column
+> - Terminal states are irreversible
 
-## 5. 数据库结构（如适用）
+## 5. Database Schema (if applicable)
 
-### 5.1 任务库
+### 5.1 Task Store
 
-> 列出主表 + 状态日志表的字段大纲。
+> List the field outline for the primary task table and the state-log table.
 
-### 5.2 外部数据存储（只读）
+### 5.2 External Data Store (read-only)
 
-> 列出依赖的业务表 + 字段差异（如有探查结论引用 docs/decisions.md）。
+> List the dependent business tables and any field discrepancies (reference probe/inspection conclusions in docs/decisions.md if available).
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in your project content -->
 
-## 6. 依赖关系
+## 6. Dependency Graph
 
-> 用 ASCII 图描述模块间依赖方向（避免循环依赖）。
+> Use an ASCII diagram to describe inter-module dependency direction (no circular dependencies).
 >
-> 示例：
+> Example:
 > ```
 > main.py → lifespan → recovery → repository
 >       → app → routes → BackgroundTasks → worker
 >                                        → state / repository / data / <ai> / callback
 > ```
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in your project content -->
 
-## 7. 测试策略
+## 7. Test Strategy
 
-> | 类型 | 路径 | 触发 |
+> | Type | Path | Trigger |
 > |---|---|---|
-> | 单元 | `tests/unit/` | `pytest` 默认 |
-> | 集成 | `tests/integration/` | 标注 `-m integration` |
-> | E2E | `tests/e2e/` | 标注 `-m e2e` |
-> | evals | `evals/<场景>/` | 独立 runner |
+> | Unit | `tests/unit/` | default `pytest` run |
+> | Integration | `tests/integration/` | marked `-m integration` |
+> | E2E | `tests/e2e/` | marked `-m e2e` |
+> | Evals | `evals/<scenario>/` | standalone runner |
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in your project content -->
 
-## 8. 部署拓扑
+## 8. Deployment Topology
 
-> 详细上线步骤见 docs/runbook.md。
+> Detailed release steps are in docs/runbook.md.
 >
-> 示例：
-> - 单实例 `<语言运行时>` 进程（MVP）
-> - Docker 镜像：`<基础镜像>` 多阶段构建
-> - 环境变量从 `.env`（本地）/ K8s Secret（生产）注入
-> - 外部数据存储连接：内网
-> - LLM 调用（如适用）：经公网到 `<提供方>`
+> Example:
+> - Single-instance `<language runtime>` process (MVP)
+> - Docker image: multi-stage build from `<base image>`
+> - Environment variables injected from `.env` (local) / K8s Secret (production)
+> - External data store connection: internal network
+> - LLM calls (if applicable): over the public internet to `<provider>`
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in your project content -->

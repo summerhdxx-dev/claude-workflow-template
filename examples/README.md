@@ -1,21 +1,22 @@
 # examples/
 
-本目录存放**占位符全部填好**的参考样例,让你直观看到「模板填完之后长什么样」。
+**English** | [简体中文](README.zh-CN.md)
 
-## sample-comment-service —— 评论生成服务
+This directory contains **fully filled-in** reference examples so you can see at a glance what a completed template looks like.
 
-一个典型的「接收方服务」示例,覆盖模板设计时假想的完整场景:
+## sample-comment-service — Comment Generation Service
 
-> 接收外部管理后台的 POST 请求 → 查询业务数据 → 调用 LLM 生成评论 → 异步回调把结果回传。
+A typical "receiver service" example that covers the complete scenario the template was designed for:
 
-它演示了如何把根目录的空白模板填成一个真实项目:
+> Receive a POST request from an external admin backend → query business data → call an LLM to generate a comment → asynchronously callback the result to the caller.
 
-| 模板文件 | 示例填法看点 |
+It demonstrates how to fill out the blank templates in the root directory for a real project:
+
+| Template file | What to look for in the example |
 |---|---|
-| `PROJECT.md` | 一句话目标 / 角色定位 / 明确不做 / 成功标准 怎么写实 |
-| `SPEC.md` | 任务状态机(§4)、LLM 调用规则(§6)、改动分级(§11)怎么落到具体字段 |
-| `TASKS.md` | 阶段 1-7 任务怎么按「数据 → API → 业务 → LLM → 回调 → E2E」拆 |
-| `ACCEPTANCE.md` | 验收条件怎么写成「可用测试/命令回答通过与否」 |
+| `PROJECT.md` | How to write a concrete one-liner goal / role definition / explicit non-goals / success criteria |
+| `SPEC.md` | How the task state machine (§4), LLM call rules (§6), and change classification (§11) map to real fields |
+| `TASKS.md` | How to break phase 1–7 tasks along the "data → API → business logic → LLM → callback → E2E" axis |
+| `ACCEPTANCE.md` | How to write acceptance criteria that can be answered pass/fail by a test, command, or manual check |
 
-> 注意:示例为说明用途**做了精简**,不是完整生产文档。它的价值是展示**填写风格和粒度**,
-> 而非照抄。你的项目请从根目录的空白模板开始填,需要找参照时再来看这里。
+> Note: the example has been **intentionally condensed** for illustration purposes — it is not a complete production document. Its value is showing **writing style and level of detail**, not something to copy verbatim. Start your own project from the blank templates in the root directory and refer back here when you need a reference.

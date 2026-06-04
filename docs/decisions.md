@@ -1,38 +1,40 @@
-# 技术决策日志
+# Technical Decision Log
 
-记录本项目重要的技术决策与历史约束，便于后续迭代追溯。
+**English** | [简体中文](decisions.zh-CN.md)
 
-记录格式：
-- **ID**：DECISION-NNN（按时间顺序）
-- **日期**：YYYY-MM-DD
-- **背景**：为什么需要这个决策
-- **选项**：考虑过的方案
-- **决策**：最终采用方案 + 理由
-- **影响范围**：对哪些模块 / 文档 / 代码产生约束
-- **后续追踪**：什么情况下需要重新评估
+Records important technical decisions and historical constraints for this project, enabling traceability across future iterations.
 
-记录原则：
-- 每条 L3 改动（见 SPEC.md §11）必须先写入本文件再实施
-- 已记录的决策若被推翻，新增 DECISION-NNN 标注"取代 DECISION-MMM"，不删旧条目
-- 探查结论 / 联调结论也以 DECISION-NNN 形式落盘
+Entry format:
+- **ID**: DECISION-NNN (chronological order)
+- **Date**: YYYY-MM-DD
+- **Context**: why this decision was needed
+- **Options**: alternatives that were considered
+- **Decision**: the chosen approach + rationale
+- **Scope of impact**: which modules / documents / code are constrained
+- **Follow-up**: under what circumstances should this decision be revisited
 
----
-
-## DECISION-000：工作流约定（模板默认提供，可保留可替换）
-
-- **日期**：YYYY-MM-DD
-- **背景**：项目启动时需要明确 AI 协作 / 文档先行 / commit 规范的基础约定
-- **选项**：
-  - A：宽松约定（按需文档化、按需 commit）
-  - B：严格约定（CLAUDE.md 全规则、文档先行、一任务一 commit）
-- **决策**：采用 B
-  1. 严格按 `CLAUDE.md` 第 2 节核心执行流程推进任务
-  2. 文档优先级：PROJECT.md > SPEC.md > ACCEPTANCE.md > TASKS.md > 其他
-  3. 一个 TASKS.md 任务 = 一次 commit + push
-  4. commit message 中文（type 前缀英文）
-- **影响范围**：本项目所有 AI 协作流程、所有 commit 节奏
-- **后续追踪**：项目稳定后可重新评估是否切换到 PR 流程
+Recording principles:
+- Every L3 change (see SPEC.md §11) must be written into this file before implementation
+- When a recorded decision is overturned, add a new DECISION-NNN entry marked "supersedes DECISION-MMM" — do not delete the old entry
+- Probe/inspection conclusions and integration-testing conclusions are also recorded as DECISION-NNN entries
 
 ---
 
-<!-- 后续决策按 DECISION-001 / DECISION-002 ... 顺序追加 -->
+## DECISION-000: Workflow Convention (template default — keep or replace)
+
+- **Date**: YYYY-MM-DD
+- **Context**: At project kickoff, the team needed to agree on the baseline conventions for AI collaboration, docs-first workflow, and commit discipline.
+- **Options**:
+  - A: Loose convention (document and commit as needed)
+  - B: Strict convention (full CLAUDE.md ruleset, docs-first, one commit per task)
+- **Decision**: Adopt B
+  1. Follow the core execution flow in `CLAUDE.md` Section 2 strictly
+  2. Document priority: PROJECT.md > SPEC.md > ACCEPTANCE.md > TASKS.md > others
+  3. One TASKS.md task = one commit + push
+  4. Commit message body in Chinese (type prefix in English)
+- **Scope of impact**: All AI collaboration workflows and all commit cadence for this project
+- **Follow-up**: Once the project stabilizes, evaluate whether to switch to a PR-based workflow
+
+---
+
+<!-- Append subsequent decisions as DECISION-001 / DECISION-002 ... -->

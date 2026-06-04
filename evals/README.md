@@ -1,33 +1,35 @@
 # evals/
 
-> **仅在项目涉及 LLM/Agent 调用时启用，否则可整目录删除。**
+**English** | [简体中文](README.zh-CN.md)
 
-本目录存放 LLM 调用的"输出符合预期"评估用例，与单元/集成测试互补：
-- 单元测试 → 代码逻辑正确性
-- evals → LLM 在固定输入下输出是否稳定、是否符合业务期望
+> **Enable this directory only when the project involves LLM / Agent calls. Otherwise the entire directory may be deleted.**
 
-## 用例约定
+This directory holds evaluation cases that verify "output matches expectation" for LLM calls, complementing unit and integration tests:
+- Unit tests → correctness of code logic
+- Evals → whether the LLM produces stable, business-aligned output for a fixed input
 
-每个用例必须包含：
-1. **输入**：固定的 prompt 入参（脱敏后）
-2. **期望输出**：JSON schema / 关键词 / 长度区间 / 数量约束
-3. **断言方式**：pytest assert / 字符串匹配 / LLM-as-judge
+## Case Convention
 
-## 必备覆盖场景
+Every eval case must include:
+1. **Input**: fixed prompt parameters (sanitized)
+2. **Expected output**: JSON schema / keywords / length range / quantity constraints
+3. **Assertion method**: pytest assert / string matching / LLM-as-judge
 
-按项目实际情况勾选：
-- [ ] 主流程合法路径（输入 → 输出符合 schema）
-- [ ] prompt injection 防护（构造越界输入，验证仍输出合法 JSON）
-- [ ] 输出格式异常处理（解析失败重试 / 截断）
-- [ ] 边界数据（空输入 / 超长输入 / 缺字段）
+## Required Coverage Scenarios
 
-## 运行方式
+Check off those applicable to your project:
+- [ ] Main happy path (input → output conforms to schema)
+- [ ] Prompt injection protection (crafted out-of-bounds input still yields valid JSON)
+- [ ] Output format error handling (retry on parse failure / truncation)
+- [ ] Edge-case data (empty input / oversized input / missing fields)
 
-> 由项目自定（`pytest evals/` / 独立 runner / CI 集成）
+## How to Run
 
-<!-- 删除以下示例后填写本项目内容 -->
+> Defined per project (`pytest evals/` / standalone runner / CI integration)
 
-> 示例目录命名：
-> - `evals/<功能场景>/` 例如 `comment_generation/` / `intent_classification/`
-> - 每个场景一个 `test_<具体用例>.py` 文件
-> - 用例输入 / 期望输出 / 断言函数三件套
+<!-- DELETE the example below and fill in your project content -->
+
+> Example directory naming:
+> - `evals/<feature-scenario>/` e.g. `comment_generation/` / `intent_classification/`
+> - One `test_<specific_case>.py` file per scenario
+> - Each case contains: inputs, expected outputs, and assertion functions

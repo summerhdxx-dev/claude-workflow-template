@@ -1,32 +1,34 @@
-# Bug-NNN：<一句话描述>
+# Bug-NNN: <one-line description>
 
-- **发现日期**：YYYY-MM-DD
-- **严重度**：P0 / P1 / P2 / P3
-- **影响范围**：<受影响的模块 / 接口 / 用户>
-- **状态**：发现中 / 修复中 / 已修复 / 已关闭
+**English** | [简体中文](TEMPLATE.zh-CN.md)
 
-## 1. 现象
+- **Discovered**: YYYY-MM-DD
+- **Severity**: P0 / P1 / P2 / P3
+- **Affected scope**: <impacted modules / endpoints / users>
+- **Status**: Investigating / In progress / Fixed / Closed
 
-<可观察到的现象、复现步骤、截图 / 日志摘要>
+## 1. Observed Behavior
 
-## 2. 复现条件
+<Observable symptoms, reproduction steps, screenshot / log excerpt>
 
-<最小复现路径>
+## 2. Reproduction Conditions
 
-## 3. 根因分析
+<Minimal reproduction path>
 
-<定位过程 + 根因>
+## 3. Root Cause Analysis
 
-## 4. 修复方案
+<Investigation process + root cause>
 
-<最小修复 diff 摘要、commit hash、PR 链接>
+## 4. Fix
 
-## 5. 防回归措施
+<Minimal fix diff summary, commit hash, PR link>
 
-- [ ] 单元测试 / 集成测试已补充：<测试位置>
-- [ ] 是否需要更新 SPEC.md / ACCEPTANCE.md：<具体节号>
-- [ ] 是否需要新增 eval 用例：<用例位置>
+## 5. Regression-Prevention Measures
 
-## 6. 后续追踪
+- [ ] Unit / integration test added: <test location>
+- [ ] SPEC.md / ACCEPTANCE.md update required: <specific section>
+- [ ] New eval case required: <case location>
 
-<已知遗留 / 待观察项>
+## 6. Follow-up
+
+<Known residual issues / items to monitor>

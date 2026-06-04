@@ -1,18 +1,18 @@
 ---
-name: 改进建议
-about: 提出规则、文档骨架、起步流程、示例等方面的改进想法
+name: Improvement suggestion
+about: Suggest improvements to the rules, document skeleton, onboarding flow, examples, etc.
 title: "[IMPROVE] "
 labels: enhancement
 ---
 
-## 想解决的问题
+## Problem to solve
 
-> 当前模板在什么场景下不够好用 / 不够清晰?
+> In what scenario is the template currently not good enough / not clear enough?
 
-## 建议方案
+## Proposed solution
 
-> 你希望怎么改。涉及 `CLAUDE.md` 规则时,请说明「原规则在什么场景下帮了倒忙」。
+> How you'd like it changed. For changes to `CLAUDE.md` rules, explain what scenario the original rule got in the way.
 
-## 影响范围
+## Impact scope
 
-> 这个改动会动到哪些文件 / 章节?是否保持技术栈无关?
+> Which files / sections does this change touch? Does it stay technology-stack-agnostic?

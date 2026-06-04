@@ -1,23 +1,23 @@
 ---
-name: 问题反馈
-about: 报告文档不一致、规则歧义、占位符错误、跨平台问题等
+name: Bug report
+about: Report a documentation inconsistency, rule ambiguity, placeholder error, cross-platform issue, etc.
 title: "[BUG] "
 labels: bug
 ---
 
-## 问题描述
+## Description
 
-> 清楚说明发现了什么问题。
+> Clearly describe the problem you found.
 
-## 位置
+## Location
 
-> 哪个文件 / 哪一节 / 哪一行。例如:`CLAUDE.md` 第 3 步、`SPEC.md §4.2`。
+> Which file / section / line. e.g. `CLAUDE.md` Step 3, `SPEC.md §4.2`.
 
-## 期望
+## Expected
 
-> 你认为正确的内容 / 行为应该是什么。
+> What you believe the correct content / behavior should be.
 
-## 环境(如与平台相关)
+## Environment (if platform-related)
 
-- 操作系统:
-- 使用方式(直接填写 / 配合 Claude Code / 其他):
+- OS:
+- How you use it (filling in directly / with Claude Code / other):

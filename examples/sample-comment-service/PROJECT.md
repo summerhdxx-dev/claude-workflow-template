@@ -1,80 +1,82 @@
 # comment-service
 
-> 本文件是 `claude-workflow-template` 的**填写示例**(评论生成服务),供参照填写风格用。
+**English** | [简体中文](PROJECT.zh-CN.md)
 
-# 一句话目标
+> This file is a **filled-in example** for `claude-workflow-template` (comment generation service), provided as a reference for writing style.
 
-做一个独立的评论生成接收方服务:接收管理后台的 POST 请求,按帖子 ID 查询互动数据,调用 LLM 生成一条运营评论,异步回调把结果回传调用方。
+# One-line Goal
 
-# 角色定位
+Build a standalone comment-generation receiver service: accept POST requests from the admin backend, query interaction data by post ID, call an LLM to generate one operational comment, and asynchronously callback the result to the caller.
 
-本服务扮演「评论生成接收方」,**仅作为接收方与处理方**:
+# Role Definition
 
-- 不做调用方(不主动发起请求)
-- 不做评论的实际发布(只生成文本,发布由调用方完成)
-- 不做业务数据写入(业务库只读)
-- 不做后台管理界面
+This service acts as a "comment generation receiver" and operates **exclusively as a receiver and processor**:
 
-# 目标调用方
+- Does not act as a caller (does not initiate outbound requests on its own)
+- Does not publish comments (only generates text; publishing is handled by the caller)
+- Does not write to the business database (business DB is read-only)
+- Does not provide an admin management UI
 
-- 当前唯一调用方:内部运营管理后台
-- 后续可能:其他需要「数据 → LLM 文本」能力的内部系统
+# Target Callers
 
-# 当前痛点
+- Current sole caller: internal operations admin backend
+- Future potential callers: other internal systems that need "data → LLM text" capability
 
-运营后台希望用 LLM 批量生成评论草稿,但不希望在自己代码里直接接 LLM(密钥管理、重试、脱敏、限流都是负担),因此抽出独立服务承接。
+# Current Pain Point
 
-# 第一阶段 MVP 目标
+The operations backend wants to use an LLM to batch-generate comment drafts, but does not want to integrate the LLM directly in its own code (key management, retries, redaction, and rate limiting are all a burden). This service is extracted as an independent component to take on that responsibility.
 
-1. 提供 `POST /v1/comment-tasks` 接收接口
-2. 接收请求后立即 ack,异步处理
-3. 按 `post_id` 查询互动数据(点赞 / 评论数 / 近期热词)
-4. 调用 LLM 生成一条评论文本
-5. 拼装结果,POST 到 `callback_url`
-6. 任务状态全程持久化在独立任务库
-7. 进程重启时可恢复 24h 内未完成任务
+# Phase 1 MVP Goals
 
-# 明确不做
+1. Expose `POST /v1/comment-tasks` as the intake endpoint
+2. Acknowledge the request immediately, then process asynchronously
+3. Query interaction data (likes / comment count / recent trending keywords) by `post_id`
+4. Call the LLM to generate one comment text
+5. Assemble the result and POST it to `callback_url`
+6. Persist task state throughout the entire lifecycle in a dedicated task database
+7. On process restart, resume any unfinished tasks created within the past 24 hours
 
-1. 不做调用方 / 不做评论发布
-2. 不做多模型路由、温度等高级开关
-3. 不做 webhook 签名校验(第一阶段用静态 Token)
-4. 不接 Sentry / Prometheus
-5. 不做时间范围自定义参数
-6. 不做多实例水平扩容
-7. 不做管理控制台
+# Explicit Non-Goals
 
-# 成功标准
+1. No caller role / no comment publishing
+2. No multi-model routing, temperature controls, or other advanced toggles
+3. No webhook signature verification (Phase 1 uses a static token)
+4. No Sentry / Prometheus integration
+5. No custom time-range parameters
+6. No horizontal multi-instance scaling
+7. No admin management console
 
-- 给定合法请求,能完成「接收 → 查询 → LLM → 回调」全链路
-- 任务状态在 `comment_tasks` 表中可追溯(`RECEIVED` / `QUERIED` / `GENERATED` / `DONE` / `FAILED`)
-- 同一 `task_id` 重复请求被拒绝(幂等校验,返回 409)
-- 进程重启后,未完成任务可继续
+# Success Criteria
 
-# 核心业务模式
+- Given a valid request, the full "receive → query → LLM → callback" pipeline completes end-to-end
+- Task state is traceable in the `comment_tasks` table (`RECEIVED` / `QUERIED` / `GENERATED` / `DONE` / `FAILED`)
+- Duplicate requests with the same `task_id` are rejected with idempotency check (returns 409)
+- After a process restart, unfinished tasks resume automatically
 
-## 模式 1:仅查询模式(`use_llm=false`)
-流程:接收 → 查询互动数据 → 直接拼装统计结果 → 回调
+# Core Business Modes
 
-## 模式 2:查询 + LLM 模式(`use_llm=true`,默认)
-流程:接收 → 查询互动数据 → 数据 + prompt 喂给 LLM → 拼装评论 → 回调
+## Mode 1: Query-only mode (`use_llm=false`)
+Flow: receive → query interaction data → assemble stats result directly → callback
 
-# 约束条件
+## Mode 2: Query + LLM mode (`use_llm=true`, default)
+Flow: receive → query interaction data → feed data + prompt to LLM → assemble comment → callback
 
-- **技术约束**:Python 3.12 / FastAPI / asyncpg / Anthropic SDK,全异步
-- **数据约束**:业务库只读;任务库独立 schema 读写
-- **安全约束**:LLM 密钥走环境变量;评论原文不含用户隐私字段(脱敏后入 prompt)
-- **性能约束**:ack 延迟 P95 < 200ms;全链路含 LLM P95 < 8s
-- **兼容约束**:回调 payload 结构必须严格符合对接文档
+# Constraints
 
-# 范围控制原则
+- **Technology**: Python 3.12 / FastAPI / asyncpg / Anthropic SDK, fully async
+- **Data**: business DB is read-only; task DB has its own schema with full read-write access
+- **Security**: LLM API key is loaded from environment variables; comments must not contain user PII (redacted before entering the prompt)
+- **Performance**: ack latency P95 < 200 ms; full pipeline including LLM P95 < 8 s
+- **Compatibility**: callback payload structure must strictly conform to the integration specification
 
-- 第一阶段优先跑通最小业务闭环,不追求功能完备
-- 不为 v2 提前引入队列 / 签名机制
-- 任何超出第一阶段范围的需求,默认不进入当前开发
+# Scope Control Principles
 
-# 风险提醒
+- Phase 1 priority is to complete the minimal viable business loop — not feature completeness
+- Do not introduce queues or signature mechanisms ahead of v2
+- Any requirements beyond the Phase 1 scope are excluded from the current development cycle by default
 
-- 业务表结构与文档可能有差异,需在阶段 2 通过 DDL 探查验证
-- LLM 输出格式不一定稳定,需 prefill 引导 + 解析失败重试
-- 回调失败重试可能造成调用方重复处理,SPEC 中写明重试 3 次上限
+# Risk Notes
+
+- The actual business table schema may differ from the documentation; needs DDL inspection in Phase 2 to verify
+- LLM output format is not guaranteed to be stable; prefill guidance and parse-failure retries are required
+- Callback failure retries may cause the caller to process duplicates; SPEC caps retries at 3 attempts

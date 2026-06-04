@@ -1,59 +1,61 @@
-# 对外接口约定
+# API Conventions
 
-本文件给外部调用方阅读，定义本项目对外暴露的协议（HTTP / 其他）的请求、响应、错误码、鉴权细节。
+**English** | [简体中文](api-conventions.zh-CN.md)
 
-与 SPEC.md §3 / §7 / §8 一一对齐；如发现冲突以 SPEC.md 为准。
+This document is intended for external consumers. It defines the protocol (HTTP / other) exposed by this project, covering request structure, response structure, error codes, and authentication details.
 
-## 1. 协议总览
+Aligned one-to-one with SPEC.md §3 / §7 / §8; if a conflict is found, SPEC.md takes precedence.
 
-> 列出协议类型、传输方式、字符编码、Content-Type。
+## 1. Protocol Overview
+
+> List protocol type, transport, character encoding, and Content-Type.
 >
-> 示例：HTTP/1.1 + JSON + UTF-8 + `Content-Type: application/json`
+> Example: HTTP/1.1 + JSON + UTF-8 + `Content-Type: application/json`
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in your project content -->
 
-## 2. 鉴权
+## 2. Authentication
 
-> 鉴权头名称 / 取值规则 / 错误码。
+> Auth header name / value rules / error code.
 >
-> 示例：`X-API-Token: <static-token>`，缺失或不符 → HTTP 401。
+> Example: `X-API-Token: <static-token>` — missing or invalid → HTTP 401.
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in your project content -->
 
-## 3. 请求结构
+## 3. Request Structure
 
-> 路径 / 方法 / Header / Body 完整定义。
+> Complete definition of path / method / headers / body.
 
-### 3.1 路径
+### 3.1 Path
 
 ### 3.2 Body
 
-> 字段表（与 SPEC.md §3.2 一致）。
+> Field table (consistent with SPEC.md §3.2).
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in your project content -->
 
-## 4. 响应结构
+## 4. Response Structure
 
-### 4.1 成功响应
+### 4.1 Success Response
 
-> 接收成功立即 ack 的形状。
+> Shape of the immediate acknowledgment returned on successful receipt.
 
-### 4.2 失败响应
+### 4.2 Error Response
 
-> 各类失败的形状。
+> Shape of each failure mode.
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in your project content -->
 
-## 5. 错误码与 error_msg
+## 5. Error Codes and error_msg
 
-> 完整列出所有 error_msg 模板（与 SPEC.md §8 一致）。
+> Enumerate all error_msg templates (consistent with SPEC.md §8).
 
-## 6. 回调 / 推送结构（如适用）
+## 6. Callback / Push Structure (if applicable)
 
-> 异步回调的 payload 形状、调用方需要做的幂等处理。
+> Async callback payload shape; idempotency handling required on the consumer side.
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in your project content -->
 
-## 7. 兼容性 / 版本演进
+## 7. Compatibility / Version Evolution
 
-> 协议版本字段（如适用）+ 字段废弃流程 + 客户端升级路径。
+> Protocol version field (if applicable) + field deprecation process + client upgrade path.

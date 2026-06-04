@@ -1,174 +1,176 @@
-# 当前阶段任务清单
+# Current Phase Task List
 
-本文件以 `PROJECT.md` 为范围约束，以 `SPEC.md` 为规则约束；验收标准以 `ACCEPTANCE.md` 为准。
+**English** | [简体中文](TASKS.zh-CN.md)
 
-冲突解决：`PROJECT.md` → `SPEC.md` → `ACCEPTANCE.md` 优先级，不允许擅自覆盖。
+This file takes `PROJECT.md` as its scope constraint and `SPEC.md` as its rule constraint; acceptance criteria are governed by `ACCEPTANCE.md`.
 
-执行规则（来自 `CLAUDE.md`）：
-- 每次只处理一个 `[ ]` 明确任务，不允许同时展开多个未完成任务
-- 每个任务完成后，必须更新本文件状态（`[~]` → `[x]`）
-- 必须按顺序：**先底层数据 → 再后端 API → 最后前端联调 / E2E**
-- 涉及状态变更必须经 `<状态机模块>` 封装，禁止直接 UPDATE
-- 每个 `[ ]` 任务完成 = 一次 git commit + push
+Conflict resolution: `PROJECT.md` → `SPEC.md` → `ACCEPTANCE.md` in priority order; overrides are not permitted without justification.
 
-状态标签：
-- `[ ]` 未开始
-- `[~]` 进行中（同一时刻只允许 1 个 `[~]`）
-- `[x]` 已完成
+Execution rules (from `CLAUDE.md`):
+- Process only one explicit `[ ]` task at a time; do not open multiple incomplete tasks simultaneously
+- After each task completes, update this file's status (`[~]` → `[x]`)
+- Maintain the mandatory order: **data layer first → backend API next → frontend integration / E2E last**
+- All state changes must go through the `<state machine module>` wrapper; direct UPDATEs are forbidden
+- Each completed `[ ]` task = one git commit + push
 
----
-
-## 当前进度
-
-> **当前任务**：阶段 1 — 任务 1（项目初始化）
-> **上次更新**：YYYY-MM-DD（项目刚启动）
-
-每次任务完成后必须同步更新"当前任务"指针行。
+Status labels:
+- `[ ]` Not started
+- `[~]` In progress (only 1 `[~]` allowed at any given time)
+- `[x]` Completed
 
 ---
 
-## 阶段 1：项目初始化与开发基础
+## Current Progress
 
-**目标**：让仓库具备可执行项目的基础能力（依赖管理、lint、测试、容器化、最小应用）。
+> **Current task**: Phase 1 — Task 1 (project initialization)
+> **Last updated**: YYYY-MM-DD (project just started)
 
-> 按项目实际技术栈替换以下示例条目。
+The "current task" pointer line above must be updated every time a task is completed.
+
+---
+
+## Phase 1: Project Initialization and Development Foundation
+
+**Goal**: Give the repository the foundational capabilities needed to run the project (dependency management, lint, tests, containerization, minimal application).
+
+> REPLACE with this project's phase-1 task list using the actual technology stack.
 >
-> 示例：
-> - [ ] 配置依赖管理（uv / poetry / npm 等）
-> - [ ] 配置 lint + 类型检查
-> - [ ] 配置测试框架（最小一条 happy path 跑通）
-> - [ ] 创建 `.env.example` + 本地 `.env`（**不入 git**）
-> - [ ] 实现 settings 加载（含字段校验）
-> - [ ] 实现 structured 日志
-> - [ ] 实现 `GET /health`（不依赖外部）
-> - [ ] 容器化（Dockerfile / docker-compose）
-> - [ ] 完善 README
+> Example:
+> - [ ] Configure dependency management (uv / poetry / npm, etc.)
+> - [ ] Configure lint + type checking
+> - [ ] Configure test framework (at minimum one happy-path test passing)
+> - [ ] Create `.env.example` + local `.env` (**do not commit to git**)
+> - [ ] Implement settings loading (with field validation)
+> - [ ] Implement structured logging
+> - [ ] Implement `GET /health` (no external dependencies)
+> - [ ] Containerize (Dockerfile / docker-compose)
+> - [ ] Complete README
 
-<!-- 替换为本项目阶段 1 任务列表 -->
-
----
-
-## 阶段 2：基础数据结构
-
-**目标**：让任务持久化能力可用；摸清外部数据源实际结构。
-
-> 示例：
-> - [ ] 设计任务库 schema
-> - [ ] 编写迁移脚本
-> - [ ] 实现持久化连接池
-> - [ ] 实现外部数据源连接池
-> - [ ] DB ping 接入 `GET /health`
-> - [ ] 实现状态机封装的 repository 层
-> - [ ] 探查外部数据源实际表结构 → 记录到 docs/decisions.md
-
-<!-- 替换为本项目阶段 2 任务列表 -->
+<!-- REPLACE with this project's phase-1 task list -->
 
 ---
 
-## 阶段 3：核心 API 与状态机骨架
+## Phase 2: Core Data Structures
 
-**目标**：对外接口端到端走通到 `<INITIAL>` 状态；状态机封装就位；启动恢复就位。
+**Goal**: Make task persistence available; determine the actual structure of external data sources.
 
-> 示例：
-> - [ ] 实现请求 schema（含字段约束 + 控制字符过滤）
-> - [ ] 实现回调 payload schema
-> - [ ] 实现鉴权依赖
-> - [ ] 实现状态枚举 + 合法转移表 + transition() 校验函数
-> - [ ] 实现接收路由：鉴权 + 字段校验 + 幂等检查 + 写 `<INITIAL>` + 立即 ack
-> - [ ] 实现 worker 骨架（PENDING → PROCESSING → 占位失败）
-> - [ ] 实现启动恢复（扫 24h 内未完成任务）
-> - [ ] 单元测试：状态机合法/非法转移、幂等、字段校验
+> Example:
+> - [ ] Design task store schema
+> - [ ] Write migration scripts
+> - [ ] Implement persistent connection pool
+> - [ ] Implement external data source connection pool
+> - [ ] DB ping integrated into `GET /health`
+> - [ ] Implement state-machine-wrapped repository layer
+> - [ ] Inspect actual external data source table structure → record in `docs/decisions.md`
 
-<!-- 替换为本项目阶段 3 任务列表 -->
-
----
-
-## 阶段 4：业务逻辑模块
-
-**目标**：把 worker 占位替换为真实业务查询，完成核心业务路径。
-
-> 按项目业务逻辑展开。
-
-<!-- 替换为本项目阶段 4 任务列表 -->
+<!-- REPLACE with this project's phase-2 task list -->
 
 ---
 
-## 阶段 5：（如适用）LLM 调用模块
+## Phase 3: Core API and State Machine Skeleton
 
-**目标**：把 LLM 调用接通，含脱敏、注入防护、解析、重试。如不调 LLM，可删除本阶段。
+**Goal**: End-to-end inbound interface reaching `<INITIAL>` state; state machine wrapper in place; startup recovery in place.
 
-> 示例：
-> - [ ] 实现 prompt 模板（system + user 5 段渲染）
-> - [ ] 实现 LLM SDK 封装 + ephemeral cache + prefill
-> - [ ] 实现单次超时 + HTTP 5xx 重试
-> - [ ] 实现输入脱敏校验
-> - [ ] 实现输出解析 + 解析失败重试
-> - [ ] 单元测试：prompt 渲染、脱敏、解析、重试
-> - [ ] prompt injection 安全测试
-> - [ ] 集成测试：mock LLM 跑全路径
-> - [ ] evals：至少 1 条用例
+> Example:
+> - [ ] Implement request schema (with field constraints + control character filtering)
+> - [ ] Implement callback payload schema
+> - [ ] Implement auth dependency
+> - [ ] Implement state enumeration + valid transition table + `transition()` validation function
+> - [ ] Implement receiver route: auth + field validation + idempotency check + write `<INITIAL>` + immediate ack
+> - [ ] Implement worker skeleton (PENDING → PROCESSING → placeholder failure)
+> - [ ] Implement startup recovery (scan incomplete tasks within 24 h)
+> - [ ] Unit tests: state machine valid/invalid transitions, idempotency, field validation
 
-<!-- 替换为本项目阶段 5 任务列表 -->
-
----
-
-## 阶段 6：对外推送 / 输出模块（如适用）
-
-**目标**：把对外推送接通；error_msg 分类齐全。
-
-> 示例：
-> - [ ] 实现推送客户端（异步 POST + 超时 + 重试）
-> - [ ] 实现成功 / 失败 payload 拼装
-> - [ ] 实现 error_msg 分类映射器
-> - [ ] 单元测试 + 集成测试
-
-<!-- 替换为本项目阶段 6 任务列表 -->
+<!-- REPLACE with this project's phase-3 task list -->
 
 ---
 
-## 阶段 7：端到端集成与 evals
+## Phase 4: Business Logic Module
 
-**目标**：把 ACCEPTANCE.md 的端到端用例全部实现并通过；性能达标。
+**Goal**: Replace worker placeholders with real business queries; complete the core business path.
 
-> 示例：
-> - [ ] 端到端用例 N.M
-> - [ ] 性能压测
+> Expand according to the project's business logic.
 
-<!-- 替换为本项目阶段 7 任务列表 -->
+<!-- REPLACE with this project's phase-4 task list -->
 
 ---
 
-## 阶段 8：可观测性、文档与部署
+## Phase 5: LLM Call Module (if applicable)
 
-**目标**：可上生产；文档与代码一致；安全审计通过。
+**Goal**: Connect LLM calls with redaction, injection defense, parsing, and retry. Delete this phase if the project does not call an LLM.
 
-> 示例：
-> - [ ] 日志脱敏全审计
-> - [ ] git log 全历史扫描凭证
-> - [ ] docs/architecture.md 完整版
-> - [ ] docs/api-conventions.md 完整版
-> - [ ] docs/runbook.md 上线 checklist
-> - [ ] CHANGELOG.md v1.0 发布说明
-> - [ ] ACCEPTANCE 全条目核对
+> Example:
+> - [ ] Implement prompt template (system + user 5-section rendering)
+> - [ ] Implement LLM SDK wrapper + ephemeral cache + prefill
+> - [ ] Implement per-call timeout + HTTP 5xx retry
+> - [ ] Implement input redaction validation
+> - [ ] Implement output parsing + parse-failure retry
+> - [ ] Unit tests: prompt rendering, redaction, parsing, retry
+> - [ ] Prompt injection security tests
+> - [ ] Integration test: mock LLM full-path run
+> - [ ] Evals: at least 1 test case
 
-<!-- 替换为本项目阶段 8 任务列表 -->
-
----
-
-## 后续（v2，不在 MVP 范围）
-
-> 仅占位说明，**不展开实现**。在 MVP 全部 `[x]` 之前不允许进入这些任务。
-
-<!-- 列出 v2 待办，不动手 -->
+<!-- REPLACE with this project's phase-5 task list -->
 
 ---
 
-## 阶段交付检查（每阶段完成后过一遍）
+## Phase 6: Outbound Push / Output Module (if applicable)
 
-每个阶段所有 `[ ]` 标 `[x]` 后，必须做：
+**Goal**: Connect the outbound push; complete error_msg categorization.
 
-1. ACCEPTANCE 中本阶段相关项全部勾选 `[x]`
-2. CHANGELOG 增加本阶段交付摘要
-3. 阶段产生的技术决策（含探查、联调验证）写入 `docs/decisions.md`
-4. 单元测试 + 集成测试 + evals（如适用）全部通过
-5. 一次 git push 同步到远端
+> Example:
+> - [ ] Implement push client (async POST + timeout + retry)
+> - [ ] Implement success / failure payload assembly
+> - [ ] Implement error_msg category mapper
+> - [ ] Unit tests + integration tests
+
+<!-- REPLACE with this project's phase-6 task list -->
+
+---
+
+## Phase 7: End-to-End Integration and Evals
+
+**Goal**: Implement and pass all end-to-end test cases in ACCEPTANCE.md; meet performance targets.
+
+> Example:
+> - [ ] End-to-end test case N.M
+> - [ ] Performance load test
+
+<!-- REPLACE with this project's phase-7 task list -->
+
+---
+
+## Phase 8: Observability, Documentation, and Deployment
+
+**Goal**: Production-ready; documentation consistent with code; security audit passed.
+
+> Example:
+> - [ ] Full log redaction audit
+> - [ ] Full git history credential scan
+> - [ ] Complete `docs/architecture.md`
+> - [ ] Complete `docs/api-conventions.md`
+> - [ ] Complete `docs/runbook.md` go-live checklist
+> - [ ] `CHANGELOG.md` v1.0 release notes
+> - [ ] ACCEPTANCE full item verification
+
+<!-- REPLACE with this project's phase-8 task list -->
+
+---
+
+## Backlog (v2, outside MVP scope)
+
+> Placeholder only — **do not expand into implementation**. These tasks must not be started until all MVP tasks are `[x]`.
+
+<!-- List v2 todos here; do not act on them -->
+
+---
+
+## Phase Delivery Checklist (run through after each phase completes)
+
+After all `[ ]` tasks in a phase are marked `[x]`:
+
+1. All ACCEPTANCE items related to this phase are checked `[x]`
+2. CHANGELOG includes a delivery summary for this phase
+3. Technical decisions made during this phase (including inspections and integration confirmations) are written to `docs/decisions.md`
+4. Unit tests + integration tests + evals (if applicable) all pass
+5. One `git push` to sync to the remote

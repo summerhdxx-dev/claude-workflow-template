@@ -1,139 +1,145 @@
-# 项目名称
-<填入项目正式名称（仓库名、对外可用的全称）>
+# Project Name
 
-本文件用于定义项目目标、第一阶段范围、明确不做事项、约束条件和成功标准。
-详细产品需求见：`docs/prd/<PRD 文件>`（如适用）
-详细功能规则、状态流转和字段约束见：`SPEC.md`
-当前阶段开发任务拆分见：`TASKS.md`
-验收标准见：`ACCEPTANCE.md`
-AI 开发执行规则见：`CLAUDE.md`
+**English** | [简体中文](PROJECT.zh-CN.md)
 
-# 一句话目标
+<REPLACE with the project's official name (repository name / full public title)>
 
-> 用一句话说清这个项目要解决什么问题、为谁解决、产出是什么。
+This file defines the project goal, phase-1 scope, explicit non-goals, constraints, and success criteria.
+Detailed product requirements: `docs/prd/<PRD file>` (if applicable)
+Detailed functional rules, state transitions, and field constraints: `SPEC.md`
+Development task breakdown for the current phase: `TASKS.md`
+Acceptance criteria: `ACCEPTANCE.md`
+AI development execution rules: `CLAUDE.md`
+
+# One-Line Goal
+
+> State in one sentence what problem this project solves, for whom, and what it produces.
 >
-> 示例：做一个独立的 X 端接收方服务，接收外部 Y 系统的 POST 请求，
-> 按要求查询 Z 数据并调用 W 生成结果，异步回调把结果回传调用方。
+> Example: Build a standalone receiver service for the X side that accepts POST requests from external
+> system Y, queries Z data on demand, calls W to generate results, and asynchronously POSTs the result
+> back to the caller via callback.
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-# 角色定位
+# Role Definition
 
-> 项目在所属系统中扮演什么角色，**仅做什么、不做什么**。
+> What role does the project play in the broader system — **what it does and what it does not do**.
 >
-> 示例：本服务扮演对接文档中"X 端"的角色，**仅作为接收方与处理方**：
-> - 不做调用方
-> - 不做图片生成
-> - 不做钉钉推送
-> - 不做业务数据写入
+> Example: This service acts as the "X side" defined in the integration spec, functioning **solely as
+> the receiver and processor**:
+> - Does not act as a caller
+> - Does not handle image generation
+> - Does not send DingTalk notifications
+> - Does not write to business data stores
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-# 目标调用方
+# Target Callers
 
-> 列出当前与潜在调用方。
+> List current and potential callers.
 >
-> 示例：
-> - 当前唯一调用方：外部管理后台 X
-> - 后续可能：其他需要相同协议的内部系统
+> Example:
+> - Current sole caller: external admin portal X
+> - Future possibility: other internal systems using the same protocol
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-# 当前痛点
+# Current Pain Points
 
-> 调用方为什么需要这个服务（不做这件事会怎样）。
+> Why does the caller need this service (what breaks without it)?
 >
-> 示例：业务系统希望用 LLM 增强 X 输出，但不希望在自己代码里直接接 LLM ……
+> Example: The business system wants to enhance X output with an LLM but does not want to integrate
+> the LLM directly into its own codebase …
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-# 第一阶段 MVP 目标
+# Phase-1 MVP Goals
 
-> 本阶段只做哪几件事（数字编号），不要列超过 8 条。
+> List only what will be built in this phase (numbered). Keep to 8 items or fewer.
 >
-> 示例：
-> 1. 提供 `<对外接口路径>` 接收方接口
-> 2. 接收请求后立即 ack，异步处理
-> 3. 按 X 查询 Y，聚合 Z（基础指标）
-> 4. （如适用）调用 LLM 生成 N
-> 5. 拼装结果，POST 到 callback_url
-> 6. 任务状态全程持久化在独立的任务库
-> 7. 进程重启时可恢复未完成任务
+> Example:
+> 1. Expose `<external interface path>` as the receiver endpoint
+> 2. Acknowledge the request immediately; process asynchronously
+> 3. Query Y by X; aggregate Z (baseline metrics)
+> 4. (if applicable) Call the LLM to generate N
+> 5. Assemble result and POST to callback_url
+> 6. Persist task state end-to-end in a dedicated task store
+> 7. Resume incomplete tasks after process restart
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-# 明确不做
+# Explicit Non-Goals
 
-> 第一阶段绝对不做的事（数字编号），用来挡需求蔓延。
+> Things that will absolutely not be built in phase 1 (numbered). Use this to block scope creep.
 >
-> 示例：
-> 1. 不做调用方
-> 2. 不做 X / Y / Z 等高级开关
-> 3. 不做 webhook 签名校验
-> 4. 不接 Sentry / Prometheus / 日志聚合
-> 5. 不做时间范围自定义参数
-> 6. 不做多实例水平扩容
-> 7. 不做管理控制台
+> Example:
+> 1. No caller-side role
+> 2. No X / Y / Z advanced feature switches
+> 3. No webhook signature verification
+> 4. No Sentry / Prometheus / log aggregation
+> 5. No custom time-range parameters
+> 6. No horizontal multi-instance scaling
+> 7. No management console
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-# 成功标准
+# Success Criteria
 
-> 第一阶段做完后，必须满足哪些可验证的条件（与 ACCEPTANCE.md 对齐）。
+> Verifiable conditions that must be met when phase 1 is complete (aligned with ACCEPTANCE.md).
 >
-> 示例：
-> - 给定合法请求，能完成"接收 → 查询 → 处理 → 回调"全链路
-> - 任务状态在 <任务主表> 中可追溯（<INITIAL> / <STAGE_N> / <TERMINAL_OK> / <TERMINAL_FAIL>）
-> - 同一 ID 重复请求被拒绝（幂等校验）
-> - 进程重启后，未完成任务可继续
+> Example:
+> - Given a valid request, the full chain "receive → query → process → callback" completes
+> - Task state is traceable in `<task master table>` (`<INITIAL>` / `<STAGE_N>` / `<TERMINAL_OK>` / `<TERMINAL_FAIL>`)
+> - Duplicate requests with the same ID are rejected (idempotency check)
+> - Incomplete tasks resume after process restart
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-# 核心业务模式
+# Core Business Modes
 
-> 列出本项目的 N 种主要工作模式（如：仅查询模式 / AI 增强模式）。
+> List the N primary operating modes of this project (e.g., query-only mode / AI-enhanced mode).
 >
-> 示例：
-> ## 模式1：仅 X 模式
-> 流程：接收 → X → 直接拼装 → 回调
+> Example:
+> ## Mode 1: X-only mode
+> Flow: receive → X → assemble directly → callback
 >
-> ## 模式2：X + AI 模式
-> 流程：接收 → X → 把数据 + prompt 喂给 LLM → 拼装 → 回调
+> ## Mode 2: X + AI mode
+> Flow: receive → X → feed data + prompt to LLM → assemble → callback
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-# 约束条件
+# Constraints
 
-> 技术 / 数据 / 安全 / 性能 / 兼容性五类约束，每类一句话。
+> One sentence per category: technical / data / security / performance / compatibility.
 >
-> 示例：
-> - **技术约束**：<语言/框架/包管理器/异步模型>
-> - **数据约束**：<只读 / 读写 / 隔离要求>
-> - **安全约束**：<凭证管理 / 脱敏要求>
-> - **性能约束**：<延迟 / 吞吐目标>
-> - **兼容约束**：<协议必须严格符合 X>
+> Example:
+> - **Technical**: <language / framework / package manager / async model>
+> - **Data**: <read-only / read-write / isolation requirements>
+> - **Security**: <credential management / redaction requirements>
+> - **Performance**: <latency / throughput targets>
+> - **Compatibility**: <protocol must strictly conform to X>
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-# 范围控制原则
+# Scope Control Principles
 
-> 比"明确不做"更软的边界，描述决策原则。
+> Softer boundaries than "Explicit Non-Goals" — decision-making principles.
 >
-> 示例：
-> - 第一阶段优先跑通最小业务闭环，不追求功能完备
-> - 不为 v2 提前引入复杂调度、队列、签名机制
-> - 不为"未来可能会用"提前抽象
-> - 任何超出第一阶段范围的需求，默认不进入当前开发
+> Example:
+> - Phase 1 prioritizes closing the minimal business loop; feature completeness is not the goal
+> - Do not introduce complex scheduling, queuing, or signing mechanisms for v2
+> - Do not pre-abstract for "things we might need later"
+> - Any requirement beyond phase-1 scope is excluded from the current development cycle by default
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-# 风险提醒
+# Known Risks
 
-> 已知会影响 MVP 的风险点（数据不齐、字段类型不一致、第三方限流等）。
+> Known risks that may affect the MVP (missing data, type mismatches, third-party rate limits, etc.).
 >
-> 示例：
-> - 业务表结构与文档描述可能存在差异，需在阶段 2 通过 DDL 探查验证
-> - LLM 输出 JSON 格式不一定稳定，需用 prefill 引导 + 解析失败时重试
-> - 回调失败重试可能造成调用方重复处理，需在 SPEC 中写明重试次数
+> Example:
+> - The actual business table schema may differ from documentation; verify via DDL inspection in phase 2
+> - LLM JSON output format is not guaranteed to be stable; use prefill guidance and retry on parse failure
+> - Callback retry on failure may cause duplicate processing on the caller side; specify retry count in SPEC
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->

@@ -1,72 +1,74 @@
-# 当前阶段任务清单 —— comment-service(填写示例)
+# Current Phase Task List — comment-service (filled-in example)
 
-> 本文件为 `claude-workflow-template` 的填写示例。状态标签里**故意混用** `[x]` / `[~]` / `[ ]`,
-> 演示一个推进到一半的项目长什么样。
+**English** | [简体中文](TASKS.zh-CN.md)
 
-## 当前进度
+> This file is a filled-in example for `claude-workflow-template`. The status markers intentionally
+> **mix** `[x]` / `[~]` / `[ ]` to show what a project looks like halfway through.
 
-> **当前任务**:阶段 3 — 实现接收路由(鉴权 + 字段校验 + 幂等 + 写 RECEIVED + ack)
-> **上次更新**:2026-05-20
+## Current Progress
+
+> **Current task**: Phase 3 — implement intake route (auth + field validation + idempotency + write RECEIVED + ack)
+> **Last updated**: 2026-05-20
 
 ---
 
-## 阶段 1:项目初始化与开发基础
+## Phase 1: Project Initialization and Development Foundations
 
-- [x] 配置依赖管理(uv)
-- [x] 配置 lint + 类型检查(ruff + mypy --strict)
-- [x] 配置测试框架(pytest,一条 happy path 跑通)
-- [x] 创建 `.env.example` + 本地 `.env`(不入 git)
-- [x] 实现 settings 加载(含字段校验)
-- [x] 实现 structured 日志
-- [x] 实现 `GET /health`(不依赖外部)
-- [x] 容器化(Dockerfile)
-- [x] 完善 README
+- [x] Set up dependency management (uv)
+- [x] Configure lint + type checking (ruff + mypy --strict)
+- [x] Configure test framework (pytest, one happy-path test passing)
+- [x] Create `.env.example` + local `.env` (not committed to git)
+- [x] Implement settings loading (with field validation)
+- [x] Implement structured logging
+- [x] Implement `GET /health` (no external dependencies)
+- [x] Containerize (Dockerfile)
+- [x] Complete README
 
-## 阶段 2:基础数据结构
+## Phase 2: Core Data Structures
 
-- [x] 设计任务库 schema(`comment_tasks` + `comment_task_logs`)
-- [x] 编写迁移脚本
-- [x] 实现任务库连接池
-- [x] 实现业务库只读连接池
-- [x] DB ping 接入 `GET /health`
-- [x] 实现状态机封装的 repository 层
-- [x] 探查业务库实际表结构 → 记录到 docs/decisions.md(DECISION-001)
+- [x] Design task DB schema (`comment_tasks` + `comment_task_logs`)
+- [x] Write migration scripts
+- [x] Implement task DB connection pool
+- [x] Implement business DB read-only connection pool
+- [x] Wire DB ping into `GET /health`
+- [x] Implement state-machine-backed repository layer
+- [x] Inspect actual business DB table structure → record in docs/decisions.md (DECISION-001)
 
-## 阶段 3:核心 API 与状态机骨架
+## Phase 3: Core API and State Machine Skeleton
 
-- [x] 实现请求 schema(字段约束 + 控制字符过滤)
-- [x] 实现回调 payload schema
-- [x] 实现鉴权依赖(静态 Token)
-- [x] 实现状态枚举 + 合法转移表 + `transition()` 校验函数
-- [~] 实现接收路由:鉴权 + 字段校验 + 幂等检查 + 写 `RECEIVED` + 立即 ack
-- [ ] 实现 worker 骨架(RECEIVED → QUERIED → 占位失败)
-- [ ] 实现启动恢复(扫 24h 内未完成任务)
-- [ ] 单元测试:状态机合法/非法转移、幂等、字段校验
+- [x] Implement request schema (field constraints + control character stripping)
+- [x] Implement callback payload schema
+- [x] Implement auth dependency (static token)
+- [x] Implement state enum + legal transition table + `transition()` validation function
+- [~] Implement intake route: auth + field validation + idempotency check + write `RECEIVED` + immediate ack
+- [ ] Implement worker skeleton (RECEIVED → QUERIED → placeholder failure)
+- [ ] Implement startup recovery (scan unfinished tasks within past 24 h)
+- [ ] Unit tests: state machine legal/illegal transitions, idempotency, field validation
 
-## 阶段 4:业务逻辑模块
+## Phase 4: Business Logic Modules
 
-- [ ] 实现互动数据查询(只读 SQL,脱敏)
-- [ ] worker 接入真实查询,推进到 `QUERIED`
-- [ ] 仅查询模式:直接拼装统计结果到 `GENERATED`
+- [ ] Implement interaction data query (read-only SQL, with redaction)
+- [ ] Wire real query into worker, advance to `QUERIED`
+- [ ] Query-only mode: assemble stats result directly to `GENERATED`
 
-## 阶段 5:LLM 调用模块
+## Phase 5: LLM Call Module
 
-- [ ] 实现 prompt 模板(system + user 渲染)
-- [ ] 实现 LLM SDK 封装 + ephemeral cache + prefill
-- [ ] 实现单次超时 + HTTP 5xx 重试
-- [ ] 实现输入脱敏校验
-- [ ] 实现输出解析 + 解析失败重试
-- [ ] 单元测试 + prompt injection 安全测试
-- [ ] evals:至少 1 条用例(评论生成合法路径)
+- [ ] Implement prompt template (system + user rendering)
+- [ ] Implement LLM SDK wrapper + ephemeral cache + prefill
+- [ ] Implement single-call timeout + HTTP 5xx retry
+- [ ] Implement input redaction validation
+- [ ] Implement output parsing + parse-failure retry
+- [ ] Unit tests + prompt injection security tests
+- [ ] Evals: at least 1 case (comment generation happy path)
 
-## 阶段 6:回调推送模块
+## Phase 6: Callback Delivery Module
 
-- [ ] 实现回调客户端(异步 POST + 超时 + 3 次退避重试)
-- [ ] 实现成功 / 失败 payload 拼装
-- [ ] 实现 error_msg 分类映射器
-- [ ] 单元测试 + 集成测试
+- [ ] Implement callback client (async POST + timeout + 3-attempt exponential back-off retry)
+- [ ] Implement success / failure payload assembly
+- [ ] Implement error_msg category mapper
+- [ ] Unit tests + integration tests
 
-## 阶段 7:端到端集成与 evals
+## Phase 7: End-to-End Integration and Evals
 
-- [ ] 端到端用例 11.1 ~ 11.5(见 ACCEPTANCE.md)
-- [ ] 性能压测(ack 延迟 / 全链路延迟)
+- [ ] End-to-end cases 11.1 ~ 11.5 (see ACCEPTANCE.md)
+- [ ] Performance test (ack latency / full pipeline latency)

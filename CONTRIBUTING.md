@@ -1,36 +1,38 @@
-# 贡献指南
+# Contributing Guide
 
-感谢你愿意改进 `claude-workflow-template`。本项目是一套**与技术栈无关的「AI 协作 + 文档先行」工作流模板**,贡献的核心是让这套规则与文档骨架更清晰、更通用、更易落地。
+**English** | [简体中文](CONTRIBUTING.zh-CN.md)
 
-## 贡献什么
+Thank you for helping improve `claude-workflow-template`. This project is a **technology-stack-agnostic "AI collaboration + docs-first" workflow template**. Contributing means making its rules and document skeleton clearer, more general, and easier to adopt.
 
-欢迎的贡献类型:
+## What to Contribute
 
-- **规则改进** — `CLAUDE.md` 的某条约束不清晰、有歧义、或在实践中反而帮倒忙
-- **文档骨架优化** — 四件套(`PROJECT.md` / `SPEC.md` / `TASKS.md` / `ACCEPTANCE.md`)或 `docs/` 模板的结构改进
-- **一致性修复** — 文档之间相互引用但对不上(如目录不存在、章节号错位)
-- **示例补充** — 在 `examples/` 下补充不同技术栈 / 不同场景的填好样例
-- **可用性** — 起步流程、占位符标记、跨平台兼容(尤其 Windows)等
+Contributions welcome in the following categories:
 
-## 贡献原则(与模板自身理念一致)
+- **Rule improvements** — a constraint in `CLAUDE.md` is unclear, ambiguous, or counterproductive in practice
+- **Document skeleton improvements** — structural improvements to the core four (`PROJECT.md` / `SPEC.md` / `TASKS.md` / `ACCEPTANCE.md`) or to templates in `docs/`
+- **Consistency fixes** — cross-references between documents that are broken (directory does not exist, section number is wrong, etc.)
+- **Example additions** — add a fully filled-in example under `examples/` for a different tech stack or use case
+- **Usability** — onboarding flow, placeholder conventions, cross-platform compatibility (especially Windows)
 
-本模板提倡「文档先行、最小改动、稳定优先」,贡献时也请遵循:
+## Contributing Principles (consistent with the template's own philosophy)
 
-1. **一个 PR 只做一件事** — 不要把多个不相关改动混在一起
-2. **改规则先说为什么** — 修改 `CLAUDE.md` 的约束时,在 PR 描述里说明「原规则在什么场景下出了问题」
-3. **保持技术栈无关** — 不要把某个具体语言 / 框架的假设写进通用模板(语言相关内容放 `examples/`)
-4. **占位符规范** — 待填位置统一用 `<尖括号>` 和 `删除以上示例后填写` / `替换为本项目` 标记,保证 `grep` 能一次定位
-5. **改了引用就改被引用方** — 修改某文档对其他文档的引用时,确认对方真实存在、章节号正确
+This template advocates "docs-first, minimal change, stability over cleverness." Please follow the same approach when contributing:
 
-## 提交流程
+1. **One PR, one thing** — do not mix unrelated changes
+2. **Explain rule changes** — when modifying a constraint in `CLAUDE.md`, describe in the PR body what scenario caused the original rule to break down
+3. **Stay technology-stack-agnostic** — do not embed assumptions about a specific language or framework into the general template (language-specific content belongs in `examples/`)
+4. **Placeholder convention** — mark all fill-in positions with `<angle brackets>` and `DELETE the example above and fill in` / `REPLACE with your project`, so a single `grep` can locate them all
+5. **Update both sides of a reference** — when you change a cross-reference in one document, confirm the target document actually exists and the section number is correct
 
-1. Fork 本仓库,从 `main` 切出特性分支
-2. 做改动,保证占位符标记一致、文档相互引用对得上
-3. commit message 建议用中文(type 前缀英文,如 `docs:` / `fix:`),与本仓库历史风格一致
-4. 提 PR,在描述里说清「改了什么、为什么改、影响哪些文档」
-5. 较大的规则 / 结构调整,建议先开 issue 讨论再动手
+## Submission Process
 
-## 反馈渠道
+1. Fork the repository and cut a feature branch from `main`
+2. Make your changes, ensuring placeholder conventions are consistent and cross-document references are correct
+3. Commit messages: the type prefix should be English (e.g. `docs:` / `fix:`); the description body may be in English or Chinese, consistent with the history of this repository
+4. Open a PR and describe what changed, why it changed, and which documents are affected
+5. For significant rule or structural changes, consider opening an issue for discussion before starting work
 
-- 发现 bug / 不一致 → 提 issue(选「问题反馈」模板)
-- 有改进想法 → 提 issue(选「改进建议」模板)或直接发 PR
+## Feedback Channels
+
+- Found a bug / inconsistency → open an issue (use the "Bug Report" template)
+- Have an improvement idea → open an issue (use the "Improvement Suggestion" template) or send a PR directly

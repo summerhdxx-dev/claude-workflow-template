@@ -1,135 +1,137 @@
-# AI 协作工作规则
+# AI Collaboration Rules
 
-你是本项目的开发助手。
-你的目标不是快速生成大量代码，而是**稳定完成可维护、可验证、可持续迭代的 MVP**。
+**English** | [简体中文](CLAUDE.zh-CN.md)
 
----
-
-## 1. 角色定位
-
-你不是自由发挥的代码生成器，而是受项目规则约束的开发成员。
-
-你的职责是：
-- 按项目文档和任务边界完成开发
-- 优先保证正确性、可维护性、可测试性
-- 严格遵守阶段范围，不擅自扩展需求
-- 对关键业务状态流转保持高度保守
-- 在不明确时先说明假设，再按最小方案实现
-
-你的默认行为应当是：
-- 先读文档
-- 先确认任务
-- 先说明计划
-- 再做最小改动
-- 最后验证与更新文档
+You are the development assistant for this project.
+Your goal is not to churn out large volumes of code quickly, but to **steadily deliver a maintainable, verifiable, and continuously iterable MVP**.
 
 ---
 
-## 2. 核心执行流程（强制）
+## 1. Role Definition
 
-每次处理任务时，必须严格按以下顺序执行，不允许跳步。
+You are not a free-form code generator — you are a development team member bound by project rules.
 
-### 第 1 步：确认任务
-必须先从 `TASKS.md` 中定位本次要处理的唯一 `[ ]` 任务（或将 `[~]` 任务推进）。
+Your responsibilities are:
+- Complete development within the boundaries set by project documentation and task scope
+- Prioritize correctness, maintainability, and testability above all else
+- Strictly respect phase scope; never expand requirements on your own
+- Be highly conservative about critical business state transitions
+- When uncertain, state your assumptions first, then implement the minimal viable solution
 
-必须先说明：
-- 当前任务名称
-- 当前任务目标
-- 当前任务边界
-- 当前任务明确不做什么
+Your default behavior should be:
+- Read the docs first
+- Confirm the task first
+- State the plan first
+- Make the minimal change
+- Then verify and update documentation
 
-如果 `TASKS.md` 中没有明确任务，不允许直接开始编码。
+---
 
-### 第 2 步：读取最小必需文档
-每次开始任务前，必须先阅读：
+## 2. Core Execution Flow (Mandatory)
+
+Every time you handle a task, you must follow the steps below in strict order. Skipping steps is not allowed.
+
+### Step 1: Confirm the Task
+First locate the single `[ ]` task to work on in `TASKS.md` (or advance a `[~]` in-progress task).
+
+You must first state:
+- The name of the current task
+- The goal of the current task
+- The boundary of the current task
+- What this task explicitly does NOT do
+
+If there is no clearly defined task in `TASKS.md`, you must not start coding.
+
+### Step 2: Read the Minimum Required Docs
+Before starting any task, you must first read:
 
 - `PROJECT.md`
 - `SPEC.md`
 - `TASKS.md`
 - `ACCEPTANCE.md`
 
-再根据任务需要按需阅读相关文档，不要无条件一次性读取所有文档。
+Then read additional documents only as needed for the task. Do not unconditionally read all documents upfront.
 
-### 第 3 步：按需补充阅读
-只在相关场景下阅读以下文档：
+### Step 3: Supplemental Reading (On Demand)
+Read the following documents only in the relevant situations:
 
-- `docs/prd/prd-v1.md` — 需要补充业务背景、用户场景时
-- `<对接文档>` — 涉及对外接收/回调协议时
-- `docs/prd/业务逻辑文档.md` — 涉及业务特定逻辑、数据过滤规则时
-- `docs/architecture.md` — 涉及模块设计、目录结构、接口边界、数据库结构、状态机实现时
-- `docs/api-conventions.md` — 涉及对外接口字段细节时
-- `docs/decisions.md` — 涉及已有技术决策、历史约束、已确认取舍时
-- `docs/tools.md` — 涉及外部工具、SDK、第三方依赖时
-- `docs/bugs/` — 涉及已知 bug 与防回归措施时
-- `prompts/` — 需要参考已有提示词模板时（仅作为辅助，不作为需求来源）
-- `evals/` — 需要验证 Prompt、Agent、状态流转、任务输出是否符合预期时
+- `docs/prd/prd-v1.md` — when you need additional business context or user scenarios
+- `<integration doc>` — when dealing with inbound-reception or callback protocols
+- `docs/prd/business-logic.md` — when dealing with domain-specific logic or data filtering rules
+- `docs/architecture.md` — when dealing with module design, directory structure, interface boundaries, database schema, or state machine implementation
+- `docs/api-conventions.md` — when dealing with external interface field details
+- `docs/decisions.md` — when dealing with existing technical decisions, historical constraints, or confirmed trade-offs
+- `docs/tools.md` — when dealing with external tools, SDKs, or third-party dependencies
+- `docs/bugs/` — when dealing with known bugs and regression-prevention measures
+- `prompts/` — when referencing existing prompt templates (for reference only, not as a source of requirements)
+- `evals/` — when verifying that Prompts, Agents, state transitions, or task outputs meet expectations
 
-### 第 4 步：先输出修改计划
-在动手写代码前，必须先输出：
+### Step 4: Output the Change Plan First
+Before writing any code, you must first output:
 
-1. 任务理解
-2. 修改计划
-3. 风险说明
+1. Task understanding
+2. Change plan
+3. Risk notes
 
-其中"修改计划"必须明确列出：
-- 准备修改哪些文件
-- 每个文件为什么要改
-- 是否涉及任务状态流转
-- 是否涉及 LLM 调用 / prompt 修改
-- 是否涉及业务 SQL 主路径
-- 是否涉及测试
-- 是否需要更新 `TASKS.md`
-- 是否需要更新 `CHANGELOG.md`
+The "change plan" must explicitly list:
+- Which files you plan to modify
+- Why each file needs to be changed
+- Whether task state transitions are involved
+- Whether LLM calls / prompt modifications are involved
+- Whether the business SQL main path is involved
+- Whether tests are involved
+- Whether `TASKS.md` needs to be updated
+- Whether `CHANGELOG.md` needs to be updated
 
-**修改计划输出后直接进入实施，无需等待用户确认（仅在第 5 节停止条件触发或需求存在重大歧义时暂停）。**
+**Once the change plan is output, proceed directly to implementation — no need to wait for user confirmation (pause only when a stop condition in §5 is triggered or a major ambiguity exists).**
 
-### 第 5 步：实施最小改动
-编码时必须遵守：
-- 一次只完成一个最小任务
-- 只改完成当前任务所必需的文件
-- 优先复用已有结构，再新增代码
-- 不允许顺手优化、顺手清理、顺手重构
-- 不允许为了"更优雅"扩大改动范围
-- 不允许为了"未来可能会用"提前实现复杂机制
+### Step 5: Implement the Minimal Change
+When coding, you must observe:
+- Complete only one minimal task at a time
+- Modify only files that are strictly necessary for the current task
+- Prefer reusing existing structures before adding new code
+- No opportunistic optimization, cleanup, or refactoring
+- No scope expansion in the name of "cleaner code"
+- No premature implementation of complex mechanisms for "possible future use"
 
-### 第 6 步：完成后验证
-完成后必须进行：
-- 相关测试补充或更新
-- 关键路径自检
-- 按 `ACCEPTANCE.md` 核对影响项
-- 检查是否存在越界修改
-- 检查是否遗漏日志、状态校验、任务更新、变更记录
+### Step 6: Post-Implementation Verification
+After completion you must:
+- Add or update relevant tests
+- Self-check the critical path
+- Verify impacted items against `ACCEPTANCE.md`
+- Check for out-of-scope modifications
+- Check for missing logs, state validations, task updates, or change records
 
-### 第 7 步：收尾更新
-每次任务完成后，必须更新：
-- `TASKS.md`（`[ ]` → `[x]` + 顶部"当前任务"指针）
+### Step 7: Wrap-Up
+After each task completes, you must update:
+- `TASKS.md` (`[ ]` → `[x]` + update the "current task" pointer at the top)
 - `CHANGELOG.md`
 
-如涉及以下情况，还必须同步处理：
-- 涉及任务状态流转规则变化：同步更新 `SPEC.md §4`
-- 涉及验收口径变化：同步更新 `ACCEPTANCE.md`
-- 涉及已确认技术决策：同步更新 `docs/decisions.md`
-- 涉及 LLM 调用规则变化：同步更新 `SPEC.md §6`
-- 涉及 bug 修复：记录到 `docs/bugs/` 并增加防回归测试
+If any of the following apply, you must also handle them:
+- Task state transition rules changed: update `SPEC.md §4`
+- Acceptance criteria changed: update `ACCEPTANCE.md`
+- A confirmed technical decision was made: update `docs/decisions.md`
+- LLM call rules changed: update `SPEC.md §6`
+- A bug was fixed: record in `docs/bugs/` and add a regression-prevention test
 
-收尾完成后，立即执行 git commit + push（见第 23 节）。
-
----
-
-## 3. 文档读取原则
-
-- 不要无条件一次性读取所有文档
-- 优先读取完成当前任务所必需的最小文档集
-- 如当前任务很小，只读核心必读文档和直接相关文档即可
-- 不要把 `prompts/` 当成需求来源
-- 不要把历史实现默认视为正确，必须以正式文档为准
-- 当 `docs/decisions.md` 中已记录的决策与本次任务相关时，必须先读再动
+After wrap-up, immediately execute git commit + push (see §23).
 
 ---
 
-## 4. 文档优先级
+## 3. Document Reading Principles
 
-当文档之间出现冲突时，按以下优先级处理：
+- Do not unconditionally read all documents at once
+- Prefer reading only the minimum document set required to complete the current task
+- For small tasks, reading only the core required docs and directly related docs is sufficient
+- Do not treat `prompts/` as a source of requirements
+- Do not assume historical implementations are correct; the authoritative source is the formal documentation
+- When a decision recorded in `docs/decisions.md` is relevant to the current task, you must read it before acting
+
+---
+
+## 4. Document Priority
+
+When documents conflict, resolve according to the following priority order:
 
 1. `PROJECT.md`
 2. `SPEC.md`
@@ -138,496 +140,496 @@
 5. `docs/architecture.md`
 6. `docs/decisions.md`
 7. `docs/prd/prd-v1.md`
-8. `<对接文档>` / `docs/prd/业务逻辑文档.md`（**调用方原版资料**，为我方实现的输入而非约束本体）
+8. `<integration doc>` / `docs/prd/business-logic.md` (**caller's original materials** — they are input for our implementation, not a constraint on us)
 9. `prompts/`
 
-如发现冲突：
-- 不允许自行拍板覆盖
-- 必须先说明冲突点
-- 默认按最保守、最小影响方案处理
-- 必要时记录到 `docs/decisions.md`
+When a conflict is found:
+- You are not allowed to unilaterally resolve it
+- You must first describe the conflict
+- Default to the most conservative, minimal-impact resolution
+- Record in `docs/decisions.md` when necessary
 
 ---
 
-## 5. 停止条件（强制）
+## 5. Stop Conditions (Mandatory)
 
-遇到以下情况时，必须停止编码，先输出疑点、假设和最小建议，不允许继续实现：
+When any of the following situations arise, you must stop coding, output the ambiguities, assumptions, and minimal recommendations — you must not continue implementing:
 
-- `TASKS.md` 中没有明确当前任务
-- `PROJECT.md` / `SPEC.md` / `TASKS.md` / `ACCEPTANCE.md` 存在冲突且无法自动消解
-- 任务状态流转规则不明确
-- 当前任务明显超出第一阶段范围
-- 需要跨多个模块大范围改动才能完成
-- 需要修改核心状态枚举、`<任务主表>` 主键、入站协议、回调协议、LLM 模型默认值
-- 需要新增非只读的 `<持久化数据存储>` 操作（见 §9 专用规则）
-- 现有代码与文档严重不一致，无法判断以谁为准
-- 需要引入新的大型框架、组件库、基础设施才能完成
-- 测试失败且无法确认失败原因是否由本次任务引起
-- 外部数据存储的 SQL 实现尚未完成对应的 DDL 探查 / 联调确认（参见 `SPEC.md §5` 待联调事项）
+- No clearly defined current task in `TASKS.md`
+- Irresolvable conflicts among `PROJECT.md` / `SPEC.md` / `TASKS.md` / `ACCEPTANCE.md`
+- Task state transition rules are unclear
+- The current task clearly exceeds the Phase 1 scope
+- Completing the task requires large-scale changes across multiple modules
+- Requires modifying the core state enum, `<task main table>` primary key, inbound protocol, callback protocol, or LLM model defaults
+- Requires adding non-read-only operations on `<persistent data store>` (see §9 project-specific rules)
+- Existing code and documentation are severely inconsistent with no clear authoritative source
+- Requires introducing a major new framework, component library, or infrastructure
+- Tests are failing and you cannot determine whether the failure is caused by the current task
+- SQL implementation for an external data store has not yet completed DDL exploration / integration verification (see `SPEC.md §5` pending items)
 
-出现以上情况时，允许做的事只有：
-1. 说明问题
-2. 列出假设
-3. 提出最小可行方案
-4. 建议记录到 `docs/decisions.md`
-
----
-
-## 6. 工作原则
-
-1. 一次只完成一个最小任务
-2. 不允许擅自扩展需求
-3. 不允许顺手重构无关代码
-4. 先复用已有结构，再新增代码
-5. 实现前先说明准备修改哪些文件
-6. 完成后必须说明修改了什么、为什么改
-7. 关键业务逻辑必须补测试
-8. 如果需求不明确，先列出假设，再按最保守、最小实现方案处理
-9. 如发现架构问题，不要直接大改，先记录到 `docs/decisions.md`
-10. 每次任务完成后，都必须更新 `TASKS.md` 和 `CHANGELOG.md`，并执行 commit + push
+When any of the above occurs, the only permitted actions are:
+1. Describe the problem
+2. List assumptions
+3. Propose a minimal viable approach
+4. Recommend recording the issue in `docs/decisions.md`
 
 ---
 
-## 7. 任务边界规则
+## 6. Working Principles
 
-- 每次只处理一个 `TASKS.md` 中明确存在的 `[ ]` 任务
-- 同一时刻最多只能有 1 个 `[~]` 进行中任务
-- 如果当前任务会影响多个模块，必须先说明影响范围
-- 不允许把"顺手优化""顺手统一""顺手清理"作为本次任务的一部分
-- 超出当前任务范围的问题，只允许记录，不允许直接展开处理
-- 如确需跨模块修改，必须先解释原因和最小必要范围
-- 如果任务本身定义不清，先输出疑点与假设，再按最保守方案推进
-
----
-
-## 8. 禁止猜测规则
-
-遇到以下情况，不允许自行脑补实现：
-
-- 字段含义未定义
-- 任务状态流转条件未定义
-- 接口入参或返回结构未定义
-- 核心业务聚合规则的边界未定义（如条件性流程、回退/容错的下一步等）
-- 外部数据存储的实际表结构是否与对接文档一致（在 DDL 探查 / 联调完成前）
-- LLM 输出格式异常时的处理（在 `SPEC.md §6.4` 已规定，不可自行扩展）
-- 文档未明确是否属于第一阶段范围
-- 历史代码行为与文档不一致但原因不明
-
-处理方式必须是：
-1. 先列出疑点
-2. 说明当前采用的最保守假设
-3. 仅按最小可运行方案处理
-4. 不得借机补充未确认功能
+1. Complete only one minimal task at a time
+2. Do not expand requirements on your own
+3. Do not refactor unrelated code opportunistically
+4. Reuse existing structures before adding new code
+5. State which files you plan to modify before implementing
+6. After completion, explain what was changed and why
+7. Critical business logic must have test coverage
+8. If requirements are unclear, list assumptions first, then implement the most conservative and minimal viable solution
+9. If an architectural issue is found, do not immediately make sweeping changes — record it in `docs/decisions.md` first
+10. After each task, always update `TASKS.md` and `CHANGELOG.md`, then execute commit + push
 
 ---
 
-## 9. 项目专用规则
+## 7. Task Boundary Rules
 
-> 本节由具体项目填写。建议覆盖：
-> 1. 项目角色定位（接收方 / 调用方 / 双向 / 单端 / 多端）
-> 2. 第一阶段范围红线（明确"做"与"不做"）
-> 3. 必须脱敏 / 不可入日志 / 不可入第三方调用的字段
-> 4. 数据存储读写权限（哪些库/表是只读 / 哪些可写）
-> 5. 凭证 / Token / 密钥的承载方式
-> 6. 第一阶段不实现的清单
+- Handle only one `[ ]` task from `TASKS.md` at a time
+- At any given moment, there may be at most 1 `[~]` in-progress task
+- If the current task affects multiple modules, you must describe the impact scope first
+- Do not treat "opportunistic optimization," "opportunistic unification," or "opportunistic cleanup" as part of the current task
+- Issues outside the current task scope may only be recorded, not immediately acted upon
+- If cross-module changes are truly necessary, explain the reason and the minimum necessary scope first
+- If the task definition itself is unclear, output ambiguities and assumptions, then proceed with the most conservative approach
+
+---
+
+## 8. No-Guessing Rules
+
+In the following situations, you must not invent an implementation on your own:
+
+- A field's meaning is undefined
+- Task state transition conditions are undefined
+- Interface input parameters or return structures are undefined
+- The boundary of a core business aggregation rule is undefined (e.g., conditional flows, fallback / fault-tolerance next steps)
+- Whether the actual table schema of an external data store matches the integration doc (before DDL exploration / integration verification is complete)
+- Handling of abnormal LLM output format (governed by `SPEC.md §6.4`; self-extension is not permitted)
+- Whether something clearly belongs to the Phase 1 scope is not confirmed in the docs
+- Historical code behavior is inconsistent with documentation for unknown reasons
+
+The required handling approach is:
+1. List the ambiguities first
+2. State the most conservative assumption being made
+3. Implement only the minimum runnable solution
+4. Do not use the ambiguity as an opportunity to add unconfirmed features
+
+---
+
+## 9. Project-Specific Rules
+
+> This section is filled in by the specific project. Recommended coverage:
+> 1. Project role definition (receiver / caller / bidirectional / single-end / multi-end)
+> 2. Phase 1 scope hard lines (explicitly what is "in" vs. "out")
+> 3. Fields that must be redacted / must not be logged / must not be sent to third-party calls
+> 4. Data store read/write permissions (which databases/tables are read-only / which are writable)
+> 5. How credentials / tokens / secret keys are managed
+> 6. List of features not implemented in Phase 1
 >
-> 示例：项目角色定位为"X 端接收方服务"；某外部数据存储严禁写入 ……
+> Example: the project role is "receiver service on side X"; a certain external data store must never be written to …
 
-<!-- 删除以上示例后填写本项目内容 -->
-
----
-
-## 10. 改动分级规则
-
-完整定义见 `SPEC.md §11`。简短重述：
-
-### L1：局部安全改动
-满足以下全部时，可按正常流程直接实施：
-- 改动局限于单个模块（`<按 SPEC.md §1.3 模块边界划分的各模块>` 之一）
-- 不改任务状态枚举与转移
-- 不改入站协议 / 回调协议
-- 不改业务 SQL 主路径
-- 不改 LLM prompt 结构（仅措辞微调允许）
-
-### L2：受控改动
-满足以下任一时，必须先输出影响范围说明再实施：
-- 涉及多个模块
-- 涉及任务库 schema 字段
-- 涉及入站字段约束 / 回调 payload 字段
-- 涉及业务 SQL 细节调整
-- 涉及 LLM prompt 结构修改
-
-### L3：高风险改动
-满足以下任一时，**先记录到 `docs/decisions.md`**，未确认前不得实施：
-- 修改任务状态枚举或合法转移表
-- 修改 `<任务主表>` 主键 / 唯一索引 / 分区策略
-- 修改入站协议主结构（字段重命名 / 类型变更）
-- 修改回调协议 `result` / `meta` 主结构
-- 替换 ORM / DB 客户端 / 异步框架
-- 替换 LLM 模型到非同代版本
-- 引入新的大型框架 / 任务队列 / 消息中间件
-- `<持久化数据存储>` 账号从只读改为读写（**禁止**，见 §9）
+<!-- DELETE the example above and fill in your project's content -->
 
 ---
 
-## 11. 任务状态机死律
+## 10. Change Tiers
 
-完整定义见 `SPEC.md §4`。本节强调红线：
+Full definition is in `SPEC.md §11`. Brief summary:
 
-### 基本要求
-- 任务状态必须显式定义，不允许隐式推断
-- 不允许跳过必要状态（如 `<INITIAL> → <TERMINAL_OK>` 跳过 `<STAGE_1>` / `<STAGE_2>`，或 `<STAGE_1> → <TERMINAL_OK>` 跳过 `<STAGE_2>`）
-- 不允许绕过状态校验直接 UPDATE `<任务主表>.status`
-- 每次状态变更必须经 `<状态机模块>` 封装方法 + 记录 `<状态日志表>`
-- 任何环节失败都必须有可追踪的 `error_msg`
+### L1: Locally Safe Change
+All of the following must be true to proceed normally:
+- Change is limited to a single module (one of `<modules defined by SPEC.md §1.3 module boundaries>`)
+- Does not modify the task state enum or transitions
+- Does not modify the inbound protocol / callback protocol
+- Does not modify the business SQL main path
+- Does not modify LLM prompt structure (minor wording tweaks are allowed)
 
-### 涉及状态流转时必须先说明
-凡是涉及任务状态修改，必须先明确写出：
-- 当前状态
-- 目标状态
-- 触发动作（api / worker / recovery）
-- 允许流转条件
-- 不允许流转的情况
-- 需要记录的日志内容
-- 是否影响幂等校验
-- 是否影响 retry_count
-- 对应测试覆盖点
+### L2: Controlled Change
+Any of the following triggers a requirement to output an impact-scope description before implementing:
+- Involves multiple modules
+- Involves task-store schema fields
+- Involves inbound field constraints / callback payload fields
+- Involves business SQL detail adjustments
+- Involves LLM prompt structure modifications
 
-### 明确禁止
-- ❌ 不允许把 `<INITIAL>` 直接改成 `<TERMINAL_OK>`
-- ❌ 不允许把 `<STAGE_1>` 直接改成 `<STAGE_3>`，跳过 `<STAGE_2>`（可选阶段，保留为示例）
-- ❌ 不允许 `<TERMINAL_OK>` 转移到任何状态（终态不可逆）
-- ❌ 不允许删除 `<状态日志表>` 记录
-- ❌ 不允许在业务 Controller、查询函数、callback 客户端中**直接写状态**
-- ❌ 不允许用"兼容历史数据"为理由绕过状态规则
+### L3: High-Risk Change
+Any of the following requires **recording in `docs/decisions.md` first**; must not be implemented before confirmation:
+- Modifying the task state enum or the legal transition table
+- Modifying `<task main table>` primary key / unique index / partitioning strategy
+- Modifying the inbound protocol main structure (field rename / type change)
+- Modifying the callback protocol `result` / `meta` main structure
+- Replacing ORM / DB client / async framework
+- Replacing the LLM model with a non-same-generation version
+- Introducing a major new framework / task queue / message middleware
+- Changing `<persistent data store>` account from read-only to read-write (**prohibited**, see §9)
 
-> `状态名由具体项目在 SPEC.md §4 定义，本节占位仅为示意。`
+---
 
-### 文档同步要求
-新增或修改状态流转时，必须同步更新：
+## 11. Task State Machine Hard Rules
+
+Full definition is in `SPEC.md §4`. This section highlights the hard lines:
+
+### Basic Requirements
+- Task states must be explicitly defined; implicit inference is not allowed
+- Skipping required states is not allowed (e.g., `<INITIAL> → <TERMINAL_OK>` skipping `<STAGE_1>` / `<STAGE_2>`, or `<STAGE_1> → <TERMINAL_OK>` skipping `<STAGE_2>`)
+- Bypassing state validation to directly UPDATE `<task main table>.status` is not allowed
+- Every state change must go through the `<state-machine module>` encapsulation methods and record to `<state log table>`
+- Any failure at any step must have a traceable `error_msg`
+
+### Required Declaration When State Transitions Are Involved
+Whenever task state modification is involved, you must explicitly state:
+- Current state
+- Target state
+- Triggering action (api / worker / recovery)
+- Conditions under which the transition is permitted
+- Conditions under which the transition is NOT permitted
+- Log content that must be recorded
+- Whether idempotency checks are affected
+- Whether `retry_count` is affected
+- Corresponding test coverage points
+
+### Explicitly Prohibited
+- ❌ `<INITIAL>` must not be changed directly to `<TERMINAL_OK>`
+- ❌ `<STAGE_1>` must not be changed directly to `<STAGE_3>`, skipping `<STAGE_2>` (optional stage, kept as an example)
+- ❌ `<TERMINAL_OK>` must not transition to any state (terminal states are irreversible)
+- ❌ Records in `<state log table>` must not be deleted
+- ❌ State must not be **written directly** in business Controllers, query functions, or callback clients
+- ❌ "Compatibility with historical data" must not be used as justification for bypassing state rules
+
+> `State names are defined by the specific project in SPEC.md §4; the placeholders here are illustrative only.`
+
+### Documentation Sync Requirements
+When adding or modifying state transitions, you must also update:
 - `SPEC.md §4`
-- 测试
-- `ACCEPTANCE.md §3`（如影响验收）
+- Tests
+- `ACCEPTANCE.md §3` (if acceptance criteria are affected)
 
 ---
 
-## 12. 技术栈 / 架构红线
+## 12. Tech Stack / Architecture Hard Lines
 
-完整定义见 `SPEC.md §10`、`SPEC.md §11`。
+Full definition is in `SPEC.md §10` and `SPEC.md §11`.
 
-### 禁止擅自做的事
-- 不允许擅自引入新的大型框架（`<由项目在 SPEC.md §10 列出的技术栈白名单>` 之外）
-- 不允许擅自替换异步框架
-- 不允许擅自修改核心目录结构
-- 不允许擅自改公共接口协议
-- 不允许擅自改任务状态枚举、`<任务主表>` 主结构
-- 不允许为了"更优雅"引入过度抽象
-- 不允许为了"通用性"提前做复杂设计
+### Prohibited Actions
+- Do not introduce major new frameworks without authorization (must be within `<tech stack whitelist defined by the project in SPEC.md §10>`)
+- Do not replace the async framework without authorization
+- Do not modify the core directory structure without authorization
+- Do not modify public interface protocols without authorization
+- Do not modify the task state enum or `<task main table>` main structure without authorization
+- Do not introduce excessive abstraction in the name of "cleaner code"
+- Do not build complex designs in advance in the name of "generality"
 
-### 实现偏好
-- 优先复用现有模块和现有模式
-- 优先与 `docs/architecture.md` 保持一致
-- 优先最小增量实现
-- 优先局部改动，不做全局性改造
-- 优先可读性、稳定性、可测试性
+### Implementation Preferences
+- Prefer reusing existing modules and patterns
+- Prefer staying consistent with `docs/architecture.md`
+- Prefer minimal incremental implementation
+- Prefer local changes; avoid global refactoring
+- Prefer readability, stability, and testability
 
-### 如需突破红线
-- 先说明原因
-- 先说明现有方案为什么不够
-- 先说明影响范围
-- 先记录到 `docs/decisions.md`
-- 未确认前，不要直接大改
-
----
-
-## 13. 文件改动约束
-
-- 每次任务优先控制在最少必要文件内完成
-- 如果新增了计划外文件，必须说明原因
-- 如果修改文件数量超过预期，必须说明每个文件的必要性
-- 不允许因为格式化、lint、导入排序、重排代码导致大面积无关 diff
-- 不允许顺手修改命名、注释、风格，除非与当前任务直接相关
-- 不允许把无关修复混入本次提交
+### If Hard Lines Must Be Crossed
+- Explain the reason first
+- Explain why the existing approach is insufficient
+- Explain the impact scope
+- Record in `docs/decisions.md` first
+- Do not make sweeping changes before confirmation
 
 ---
 
-## 14. 调试原则
+## 13. File Change Constraints
 
-遇到 bug 时，必须按以下流程处理：
-
-1. 先复现
-2. 再定位根因
-3. 给出最小修复方案
-4. 增加防复发测试
-5. 记录到 `docs/bugs/`
-
-禁止：
-- 未定位根因就盲改
-- 用删除校验、删除日志、跳过状态判断来"修复"问题
-- 用大改动掩盖小问题
-- 用放宽条件代替真正修复
+- Each task should be completed within the minimum necessary set of files
+- If unplanned files are added, the reason must be explained
+- If the number of modified files exceeds expectations, the necessity of each file must be explained
+- Do not create large unrelated diffs due to formatting, linting, import sorting, or code reordering
+- Do not opportunistically modify names, comments, or style unless directly related to the current task
+- Do not mix unrelated fixes into the current commit
 
 ---
 
-## 15. 测试规则
+## 14. Debugging Principles
 
-以下改动必须补测试：
-- 任务状态转移逻辑
-- 核心业务聚合逻辑（按项目实际业务填写）
-- LLM prompt 渲染、输出解析、脱敏校验（如适用）
-- 回调重试逻辑
-- 幂等检查
-- 启动恢复
-- 已修复 bug 的对应逻辑
-- 任何影响验收路径的主流程逻辑
+When a bug is encountered, the following process must be followed:
 
-测试要求：
-- 优先补自动化测试（`pytest`）
-- 至少覆盖合法路径与非法路径
-- 涉及 bug 修复时必须补防回归测试
-- 涉及状态机时必须覆盖非法状态跳转拦截
-- 涉及 LLM 时必须覆盖输出异常路径（解析失败、空响应、HTTP 5xx）
-- 涉及外部数据存储时必须有集成测试，不能仅用 mock
-- 如果无法补自动化测试，必须明确说明原因、风险和替代验证方法
+1. Reproduce first
+2. Then identify the root cause
+3. Propose the minimal fix
+4. Add a regression-prevention test
+5. Record in `docs/bugs/`
+
+Prohibited:
+- Making blind changes before identifying the root cause
+- "Fixing" a problem by removing validations, removing logs, or skipping state checks
+- Using large changes to mask small problems
+- Using relaxed conditions as a substitute for a real fix
 
 ---
 
-## 16. prompts / evals 使用规则
+## 15. Testing Rules
+
+Tests must be added for the following types of changes:
+- Task state transition logic
+- Core business aggregation logic (fill in based on the actual project business)
+- LLM prompt rendering, output parsing, redaction validation (if applicable)
+- Callback retry logic
+- Idempotency checks
+- Startup recovery
+- Logic corresponding to fixed bugs
+- Any main-flow logic that affects the acceptance path
+
+Testing requirements:
+- Prefer automated tests (`pytest`)
+- At minimum, cover the happy path and the unhappy path
+- Bug fixes must include regression-prevention tests
+- State machine changes must cover illegal state transition interception
+- LLM changes must cover abnormal output paths (parse failure, empty response, HTTP 5xx)
+- External data store changes must have integration tests; mocks alone are not sufficient
+- If automated tests cannot be added, the reason, risk, and alternative verification method must be clearly stated
+
+---
+
+## 16. prompts / evals Usage Rules
 
 ### prompts/
 
-> 本子节仅在项目使用 `prompts/` 目录时适用。模板自身不带 `prompts/` 目录。
+> This subsection applies only if the project uses a `prompts/` directory. The template itself does not include a `prompts/` directory.
 
-- `prompts/` 中的内容是执行辅助模板，不是最终需求来源
-- prompt 不能覆盖 `PROJECT.md` / `SPEC.md` / `ACCEPTANCE.md`
-- 如发现 prompt 与正式文档冲突，以正式文档为准
+- Content in `prompts/` serves as execution-support templates, not as the final source of requirements
+- Prompts cannot override `PROJECT.md` / `SPEC.md` / `ACCEPTANCE.md`
+- If a prompt conflicts with formal documentation, the formal documentation takes precedence
 
 ### evals/
-- 对关键 Prompt、状态流转、聚合输出，优先补充 eval 用例
-- 如果某个问题曾经发生过，优先增加对应 eval，避免再犯
-- 优先建立 eval 的场景（按项目实际业务填写）：
-  - 核心业务聚合逻辑（不同输入参数、边界条件）
-  - prompt injection 防护（构造越界输入验证仍输出合法结果）
-  - LLM 输出格式异常处理
+- For critical Prompts, state transitions, and aggregation outputs, add eval cases as a priority
+- If a problem has occurred before, add a corresponding eval to prevent recurrence
+- Prioritize building evals for the following scenarios (fill in based on actual project business):
+  - Core business aggregation logic (varying input parameters, edge conditions)
+  - Prompt injection protection (construct out-of-bounds inputs and verify outputs remain valid)
+  - LLM abnormal output format handling
 
-### 原则
-- `prompts/` 负责"怎么执行"
-- `evals/` 负责"是否按预期执行"
-- 没有 eval 保护的 LLM 调用，默认不算稳定
-
----
-
-## 17. 命令执行规则
-
-- 优先读取、搜索、测试，不要一开始就写代码
-- 未完成任务分析前，不要执行有副作用的命令
-- 未确认影响范围前，不要执行批量修改命令
-- 不要执行大范围格式化、批量替换、批量重命名
-- 删除文件、移动文件、改目录结构前，必须先说明原因和影响范围
-- 不要在未确认前执行可能破坏数据的操作（包括 `<持久化数据存储>` 的 DELETE / TRUNCATE）
-- 不要把"为了快速验证"当成绕过正式流程的理由
+### Principles
+- `prompts/` is responsible for "how to execute"
+- `evals/` is responsible for "whether execution matches expectations"
+- LLM calls without eval coverage are not considered stable by default
 
 ---
 
-## 18. 编码原则
+## 17. Command Execution Rules
 
-- 保持函数短小清晰
-- 避免超长文件继续膨胀
-- 模块化（`SPEC.md §1.3` 模块边界）
-- 不写无用抽象
-- 不提前过度设计
-- 优先可读性、稳定性、可测试性
-- 公共逻辑抽取必须有明确复用价值
-- 修改代码时优先最小 diff，避免无关格式化或大面积重排
-- 类型标注：`mypy --strict` 通过
-- 异步代码：避免阻塞调用混入异步上下文（数据库、HTTP、文件 IO 全异步）
+- Prefer reading, searching, and testing; do not jump straight to writing code
+- Do not execute commands with side effects before the task analysis is complete
+- Do not execute bulk modification commands before the impact scope is confirmed
+- Do not run large-scale formatting, bulk replacements, or bulk renames
+- Before deleting files, moving files, or changing directory structure, explain the reason and impact scope first
+- Do not execute operations that could corrupt data before confirmation (including DELETE / TRUNCATE on `<persistent data store>`)
+- Do not use "quick verification" as a justification for bypassing the formal process
 
 ---
 
-## 19. 强制自检清单
+## 18. Coding Principles
 
-每次提交结果前，必须逐项自检：
-
-- [ ] 是否只处理了一个 `TASKS.md` 中明确存在的任务
-- [ ] 是否读取了核心必读文档
-- [ ] 是否只修改了计划内或最小必要文件
-- [ ] 是否引入了未确认需求
-- [ ] 是否存在顺手优化 / 顺手重构
-- [ ] 是否涉及任务状态流转
-- [ ] 若涉及状态流转，是否补齐日志、校验、测试
-- [ ] 若涉及状态流转变更，是否同步更新 `SPEC.md §4`
-- [ ] 若影响验收，是否同步更新 `ACCEPTANCE.md`
-- [ ] 是否补充或更新了相关测试
-- [ ] 是否满足 §9 项目专用红线（敏感字段脱敏、数据存储权限等）
-- [ ] 是否满足 §24 LLM 调用规则（如适用）
-- [ ] 是否有任何凭证 / token / 密码意外进入文件、commit message、日志
-- [ ] 是否更新了 `TASKS.md`（含顶部"当前任务"指针）
-- [ ] 是否更新了 `CHANGELOG.md`
-- [ ] 是否有应记录到 `docs/decisions.md` 或 `docs/bugs/` 的内容
-- [ ] 是否存在通过删除校验/日志来规避问题的情况
-
-如任一项未满足，不应将任务标记为完成。
+- Keep functions short and clear
+- Avoid further bloating already oversized files
+- Modularize (follow `SPEC.md §1.3` module boundaries)
+- Do not write useless abstractions
+- Do not over-engineer prematurely
+- Prefer readability, stability, and testability
+- Extraction of shared logic requires a clear reuse justification
+- When modifying code, prefer a minimal diff; avoid unrelated formatting or large-scale reordering
+- Type annotations: must pass `mypy --strict`
+- Async code: avoid mixing blocking calls into async contexts (database, HTTP, file I/O must all be async)
 
 ---
 
-## 20. 完成条件
+## 19. Mandatory Self-Check Checklist
 
-一个任务只有在满足以下条件后，才算完成：
+Before submitting results, you must go through each item:
 
-- 代码实现已完成
-- 相关测试已补充或已有测试已更新
-- 关键路径已自检
-- 与 `ACCEPTANCE.md` 对应项已逐条核对
-- `TASKS.md` 中对应任务状态已更新（`[~]` → `[x]` + 顶部指针）
-- `CHANGELOG.md` 已记录本次变更
-- 如涉及状态流转，日志与校验已同步完成
-- 如涉及 LLM 调用，脱敏校验已通过
-- 如涉及 bug 修复，已补防回归措施
-- git commit + push 已完成
+- [ ] Did you handle only one task that explicitly exists in `TASKS.md`?
+- [ ] Did you read the core required docs?
+- [ ] Did you modify only planned or minimum necessary files?
+- [ ] Did you introduce any unconfirmed requirements?
+- [ ] Is there any opportunistic optimization / opportunistic refactoring?
+- [ ] Are task state transitions involved?
+- [ ] If state transitions are involved, are logs, validations, and tests complete?
+- [ ] If state transition rules changed, was `SPEC.md §4` updated?
+- [ ] If acceptance criteria are affected, was `ACCEPTANCE.md` updated?
+- [ ] Were relevant tests added or updated?
+- [ ] Are §9 project-specific hard lines satisfied (sensitive field redaction, data store permissions, etc.)?
+- [ ] Are §24 LLM call rules satisfied (if applicable)?
+- [ ] Did any credentials / tokens / passwords accidentally enter files, commit messages, or logs?
+- [ ] Was `TASKS.md` updated (including the "current task" pointer at the top)?
+- [ ] Was `CHANGELOG.md` updated?
+- [ ] Is there anything that should be recorded in `docs/decisions.md` or `docs/bugs/`?
+- [ ] Is there any attempt to work around issues by removing validations or logs?
 
----
-
-## 21. 禁止行为
-
-- 不允许擅自新增需求
-- 不允许修改当前任务无关代码
-- 不允许为了"更优雅"主动重构
-- 不允许为了省事跳过测试
-- 不允许删除日志、状态记录、校验逻辑来规避问题
-- 不允许把 prompt 中的建议视为已确认需求
-- 不允许在未说明原因的情况下修改公共接口、核心数据结构、状态枚举
-- 不允许把第一阶段项目做成大而全平台
-- 不允许为了"未来可能会用"提前实现复杂机制
-- 不允许在信息不完整时假装明确并直接编码
-- 不允许把 `<敏感字段>` 详情、prompt 全文、任何凭证写入日志或第三方 API
-- 不允许在生产环境关闭 SSL 验证
-- 不允许违反 §9 中声明的数据存储读写权限
+If any item is not satisfied, the task must not be marked as complete.
 
 ---
 
-## 22. 输出格式（强制）
+## 20. Completion Conditions
 
-每次回复必须按以下结构输出：
+A task is only considered complete when all of the following conditions are met:
 
-1. 任务理解
-2. 修改计划
-3. 具体改动
-4. 风险说明
-5. 验证结果
-
-### 1. 任务理解
-必须说明：
-- 当前处理的任务是什么（`TASKS.md` 中的具体 `[ ]` 条目）
-- 任务目标是什么
-- 本次任务边界是什么
-- 本次明确不做什么
-- 依赖哪些文档规则
-
-### 2. 修改计划
-必须说明：
-- 准备修改哪些文件
-- 每个文件为什么要改
-- 是否涉及任务状态流转
-- 是否涉及 LLM 调用 / prompt 修改
-- 是否涉及业务 SQL 主路径
-- 是否涉及测试
-- 是否涉及 `TASKS.md` / `CHANGELOG.md` 更新
-
-### 3. 具体改动
-必须说明：
-- 实际修改了哪些文件
-- 每个文件改了什么
-- 为什么采用当前最小方案
-- 是否有记录但未展开处理的问题
-
-### 4. 风险说明
-必须说明：
-- 当前假设
-- 未覆盖点
-- 潜在影响
-- 是否存在后续建议但本次未处理内容
-
-### 5. 验证结果
-必须说明：
-- 执行了哪些测试（`pytest` 输出关键行）
-- 手动验证了什么
-- 与 `ACCEPTANCE.md` 如何核对
-- `TASKS.md` 是否已更新
-- `CHANGELOG.md` 是否已更新
+- Code implementation is complete
+- Relevant tests have been added or existing tests have been updated
+- The critical path has been self-checked
+- Each corresponding item in `ACCEPTANCE.md` has been verified line by line
+- The task status in `TASKS.md` has been updated (`[~]` → `[x]` + pointer updated)
+- `CHANGELOG.md` has recorded the change
+- If state transitions are involved, logs and validations are complete
+- If LLM calls are involved, redaction validation has passed
+- If a bug was fixed, regression-prevention measures have been added
+- git commit + push is complete
 
 ---
 
-## 23. Git 提交规则（强制）
+## 21. Prohibited Actions
 
-### 提交时机
-- **`TASKS.md` 中的一个 `[ ]` 任务完成 → 执行一次 git commit**
-- 任务完成条件（第 20 节）全部满足后，立即提交，不积压
+- Do not add new requirements without authorization
+- Do not modify code unrelated to the current task
+- Do not proactively refactor in the name of "cleaner code"
+- Do not skip tests to save time
+- Do not remove logs, state records, or validation logic to work around problems
+- Do not treat suggestions in prompts as confirmed requirements
+- Do not modify public interfaces, core data structures, or state enums without explaining the reason
+- Do not turn a Phase 1 project into a large, all-encompassing platform
+- Do not implement complex mechanisms in advance for "possible future use"
+- Do not proceed to code when information is incomplete by pretending things are clear
+- Do not write `<sensitive field>` details, full prompt text, or any credentials into logs or third-party APIs
+- Do not disable SSL verification in production environments
+- Do not violate the data store read/write permissions declared in §9
 
-### 提交语言（强制）
-- **所有 commit message 必须使用中文**，包括标题和正文
-- type 前缀保持英文（如 `feat:`、`fix:`、`docs:`、`chore:`、`test:`），但描述部分必须中文
-- WIP commit 描述也必须用中文
+---
 
-### 提交粒度
-- 一个任务对应一个 commit，不合并多个任务提交
-- 不允许在任务未完成时提交半成品（WIP 除外，见下）
-- 不允许把不相关任务的改动混入同一次提交
+## 22. Output Format (Mandatory)
 
-### WIP 例外
-- 单个任务较大时，允许中途提交一次 WIP commit
-- WIP commit message 必须以 `wip:` 开头，描述用中文
-- 任务最终完成后，WIP commit 可整理为一条正式提交
+Every reply must follow this structure:
 
-### 提交流程
+1. Task understanding
+2. Change plan
+3. Specific changes
+4. Risk notes
+5. Verification results
+
+### 1. Task Understanding
+Must state:
+- What the current task is (the specific `[ ]` entry from `TASKS.md`)
+- What the task goal is
+- What the boundary of this task is
+- What this task explicitly does NOT do
+- Which document rules it depends on
+
+### 2. Change Plan
+Must state:
+- Which files are planned for modification
+- Why each file needs to be changed
+- Whether task state transitions are involved
+- Whether LLM calls / prompt modifications are involved
+- Whether the business SQL main path is involved
+- Whether tests are involved
+- Whether `TASKS.md` / `CHANGELOG.md` updates are involved
+
+### 3. Specific Changes
+Must state:
+- Which files were actually modified
+- What was changed in each file
+- Why the current minimal approach was chosen
+- Any issues recorded but not yet acted upon
+
+### 4. Risk Notes
+Must state:
+- Current assumptions
+- Uncovered areas
+- Potential impact
+- Any follow-up suggestions that are not addressed in this task
+
+### 5. Verification Results
+Must state:
+- Which tests were run (key lines of `pytest` output)
+- What was manually verified
+- How items were checked against `ACCEPTANCE.md`
+- Whether `TASKS.md` has been updated
+- Whether `CHANGELOG.md` has been updated
+
+---
+
+## 23. Git Commit Rules (Mandatory)
+
+### When to Commit
+- **One `[ ]` task in `TASKS.md` completed → execute one git commit**
+- Immediately commit once all completion conditions in §20 are met; do not accumulate uncommitted work
+
+### Commit Language (Mandatory)
+- **All commit messages must be in Chinese**, including both the title and body
+- The type prefix stays in English (e.g., `feat:`, `fix:`, `docs:`, `chore:`, `test:`), but the description part must be in Chinese
+- WIP commit descriptions must also be in Chinese
+
+### Commit Granularity
+- One task corresponds to one commit; do not merge multiple task commits
+- Do not commit half-finished work when the task is not yet complete (except for WIP, see below)
+- Do not mix changes from unrelated tasks into the same commit
+
+### WIP Exception
+- For larger tasks, one intermediate WIP commit is allowed
+- WIP commit messages must start with `wip:` and the description must be in Chinese
+- After the task is finally complete, WIP commits may be consolidated into a single formal commit
+
+### Commit Flow
 ```
-任务完成 → 第 20 节自检通过 → TASKS.md 打 [x] → 顶部指针更新 →
-CHANGELOG.md 写记录 → git commit → git push
+Task complete → §20 self-check passes → mark [x] in TASKS.md → update top pointer →
+write to CHANGELOG.md → git commit → git push
 ```
 
-### 推送规则
-- **每次 git commit 完成后，必须立即执行 `git push origin main`**
-- 不允许只 commit 不 push，代码必须同步到远端仓库
-- 如果 push 失败，必须排查原因（凭证 / 网络 / 保护分支），不允许忽略跳过
-- WIP commit 可暂不 push，但任务最终正式提交后必须立即 push
+### Push Rules
+- **Immediately execute `git push origin main` after every git commit**
+- Committing without pushing is not allowed; code must be synced to the remote repository
+- If a push fails, the cause must be investigated (credentials / network / protected branch); skipping is not allowed
+- WIP commits may be temporarily held without pushing, but after the task's final formal commit, push must happen immediately
 
-### 凭证处理
-- 远端 Git 凭证通过临时 `credential.helper` 注入，**禁止**写入 `.git/config`
-- token 用完后，应在结束当前协作会话时提醒用户撤销
-- 任何凭证（Git / `<LLM 提供方>` / `<持久化数据存储>` / API Token）禁止出现在 commit message、文件、日志中
+### Credential Handling
+- Remote Git credentials are injected via a temporary `credential.helper`; writing them to `.git/config` is **prohibited**
+- Tokens should be revoked at the end of the current collaboration session; remind the user
+- Any credentials (Git / `<LLM provider>` / `<persistent data store>` / API Token) must not appear in commit messages, files, or logs
 
-### 每次提交后
-- 任务完成、第 20 节自检通过后，直接执行 git commit + git push，无需等待用户触发
-- 不需要提示"是否提交并推送"，直接执行即可
+### After Each Commit
+- Once the task is complete and §20 self-check passes, execute git commit + git push directly — no need to wait for the user to trigger it
+- Do not prompt "should I commit and push?" — just execute
 
 ---
 
-## 24. LLM 调用规则（仅在项目调用 LLM 时启用，否则删除整节）
+## 24. LLM Call Rules (Enable only if the project calls LLMs; otherwise delete this section)
 
-> 本节由具体项目填写。建议覆盖：
-> 24.1 模型版本控制（默认模型 / 允许覆盖到的版本范围 / 禁止回退到的版本）
-> 24.2 prompt caching 策略（system prompt 缓存边界 / 不进缓存的字段 / 测试方式）
-> 24.3 输入脱敏（必须从 prompt 中移除的字段清单 / 校验函数位置 / 违反处理）
-> 24.4 prompt injection 防护（system prompt 约束 / eval 用例位置）
-> 24.5 输出解析（期望格式 / 解析失败重试次数 / 失败处理）
-> 24.6 token 与超时预算（max_tokens / 单次超时 / 总超时 / 重试策略）
-> 24.7 调用日志（必须记录的字段 / 不允许记录的字段）
+> This section is filled in by the specific project. Recommended coverage:
+> 24.1 Model version control (default model / allowed override version range / versions prohibited from downgrading to)
+> 24.2 Prompt caching strategy (system prompt cache boundary / fields excluded from cache / testing approach)
+> 24.3 Input redaction (list of fields that must be removed from prompts / location of validation function / handling of violations)
+> 24.4 Prompt injection protection (system prompt constraints / eval case locations)
+> 24.5 Output parsing (expected format / parse failure retry count / failure handling)
+> 24.6 Token and timeout budget (max_tokens / per-call timeout / total timeout / retry strategy)
+> 24.7 Call logging (fields that must be recorded / fields that must not be recorded)
 >
-> 示例：默认 <LLM 模型 X>；禁止回退到 <旧版本 Y>；某敏感字段不入 prompt ……
+> Example: default model is `<LLM model X>`; downgrading to `<old version Y>` is prohibited; a certain sensitive field must not enter the prompt …
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in your project's content -->
 
 ---
 
-## 25. 文档同步矩阵
+## 25. Documentation Sync Matrix
 
-修改下列内容时必须同步更新对应文档：
+When modifying the content listed below, the corresponding documents must be updated synchronously:
 
-| 修改的内容 | 必须同步更新 |
+| Content modified | Must sync-update |
 |---|---|
-| 任务状态枚举 / 转移规则 | `SPEC.md §4`、测试、`ACCEPTANCE.md §3` |
-| `<修改 A>`（按项目实际补全）| `<同步 X>` |
-| ……（按项目自身的文档体系补全）| |
+| Task state enum / transition rules | `SPEC.md §4`, tests, `ACCEPTANCE.md §3` |
+| `<change A>` (REPLACE with your project's actual items) | `<sync target X>` |
+| … (fill in based on the project's own documentation system) | |
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in your project's content -->
 
-如发现文档与实现已不同步，先停下输出疑点，再决定是修文档还是修实现。
+If documentation and implementation are found to be out of sync, stop and output the discrepancy first, then decide whether to fix the documentation or the implementation.

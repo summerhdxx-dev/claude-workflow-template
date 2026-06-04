@@ -1,222 +1,234 @@
-# 项目规格说明
+# Project Specification
 
-本文件以 `PROJECT.md` 为范围约束，给出**详细规则、协议字段、状态机、错误处理、改动分级**等可执行级别的定义。
+**English** | [简体中文](SPEC.zh-CN.md)
 
-冲突解决：`PROJECT.md` 覆盖 `SPEC.md`，`SPEC.md` 覆盖 `docs/architecture.md`。
+This file takes `PROJECT.md` as its scope constraint and provides **detailed rules, protocol fields, task state machine, error handling, and change tiers** at an actionable level of definition.
 
-## 1. 总览
+Conflict resolution: `PROJECT.md` overrides `SPEC.md`; `SPEC.md` overrides `docs/architecture.md`.
 
-### 1.1 文档范围
+## 1. Overview
 
-> 本节描述 SPEC 涵盖的内容范围、不涵盖的内容、对应的 PROJECT 章节。
+### 1.1 Document Scope
+
+> Describe what this SPEC covers and what it does not, with references to the corresponding PROJECT sections.
 >
-> 示例：本文件覆盖项目接收侧协议、任务状态机、业务逻辑主流程、对外回调协议、错误处理、改动分级。不覆盖：实现层目录结构（见 docs/architecture.md）、对外用户文档（见 docs/api-conventions.md）。
+> Example: This file covers the inbound protocol, task state machine, business logic main flow,
+> outbound callback protocol, error handling, and change tiers. It does NOT cover: implementation-layer
+> directory structure (see `docs/architecture.md`), external API documentation (see `docs/api-conventions.md`).
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-### 1.2 第一阶段目标
+### 1.2 Phase-1 Goals
 
-> 与 PROJECT.md 第一阶段 MVP 目标对齐，按可验证条件展开 1 层。
+> Align with the Phase-1 MVP Goals in PROJECT.md and expand each by one level into verifiable conditions.
 >
-> 示例：完成 X → Y → Z 全链路；任务状态全程持久化；进程重启可恢复 24h 内未完成任务。
+> Example: Complete the full X → Y → Z chain; persist task state end-to-end; resume incomplete tasks
+> within 24 h after process restart.
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-### 1.3 模块边界
+### 1.3 Module Boundaries
 
-> 列出代码层的模块名 + 职责一句话（与 docs/architecture.md §2 对齐）。
+> List each code-level module name and its one-line responsibility (aligned with `docs/architecture.md §2`).
 >
-> 示例：
+> Example:
 > ```
 > src/<package>/
-> ├── api/             # 对外接口（路由、鉴权、字段校验）
-> ├── tasks/           # 任务状态机 + worker
-> ├── data/            # 数据查询（只读外部数据存储 + 任务库）
-> ├── <ai/>            # （如适用）LLM 调用
-> ├── callback/        # 对外推送
-> └── observability/   # 日志
+> ├── api/             # External interface (routing, auth, field validation)
+> ├── tasks/           # Task state machine + worker
+> ├── data/            # Data queries (read-only external data store + task store)
+> ├── <ai/>            # (if applicable) LLM calls
+> ├── callback/        # Outbound push
+> └── observability/   # Logging
 > ```
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-## 2. 范围与开关
+## 2. Scope and Feature Switches
 
-> 列出 PROJECT.md "明确不做" 的协议级体现：哪些字段保留兼容、哪些开关接受入参但不实现处理。
+> List the protocol-level representation of "Explicit Non-Goals" from PROJECT.md: which fields are
+> kept for compatibility, and which switches accept input parameters without implementing actual logic.
 >
-> 示例：`content_config` 接受 6 个开关，仅实现 X / Y 两个，其余 4 个回调中以 `unsupported` 字段列出。
+> Example: `content_config` accepts 6 switches; only X and Y are implemented; the remaining 4 are
+> listed as `unsupported` fields in the callback.
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-## 3. 接收侧接口协议（如适用）
+## 3. Inbound Interface Protocol (if applicable)
 
-### 3.1 协议总览
+### 3.1 Protocol Overview
 
-> HTTP / WebSocket / gRPC / 消息队列；如不适用本节可删除。
+> HTTP / WebSocket / gRPC / message queue; delete this section if not applicable.
 
-### 3.2 字段约束
+### 3.2 Field Constraints
 
-> 列出请求每个字段的类型、必填性、长度上限、字符集限制、控制字符过滤等。
+> List type, required status, length limit, character set restrictions, and control character filtering
+> for each request field.
 >
-> 示例：
-> | 字段 | 类型 | 必填 | 约束 |
+> Example:
+> | Field | Type | Required | Constraints |
 > |---|---|---|---|
-> | `config_id` | int | 是 | > 0，唯一幂等键 |
-> | `callback_url` | str | 是 | 长度 ≤ 2048，必须是 https |
-> | `prompt_text` | str | 否 | 长度 ≤ 1000，过滤控制字符 |
+> | `config_id` | int | yes | > 0, unique idempotency key |
+> | `callback_url` | str | yes | length ≤ 2048, must be https |
+> | `prompt_text` | str | no | length ≤ 1000, control characters filtered |
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-## 4. 任务状态机
+## 4. Task State Machine
 
-### 4.1 状态枚举
+### 4.1 State Enumeration
 
-> 定义所有合法状态。**状态名由具体项目自定**，下面是占位示例。
+> Define all valid states. **State names are defined by the individual project.** The entries below
+> are placeholder examples.
 >
-> 示例：
-> - `<INITIAL>`：刚接收，未开始处理
-> - `<STAGE_1>`：处理中
-> - `<STAGE_2>`：阶段 2 完成（可选）
-> - `<TERMINAL_OK>`：成功终态（不可逆）
-> - `<TERMINAL_FAIL>`：失败终态（可由人工重置回 `<INITIAL>`）
+> Example:
+> - `<INITIAL>`: Just received; processing has not started
+> - `<STAGE_1>`: Processing in progress
+> - `<STAGE_2>`: Stage 2 complete (optional)
+> - `<TERMINAL_OK>`: Success terminal state (irreversible)
+> - `<TERMINAL_FAIL>`: Failure terminal state (may be manually reset to `<INITIAL>`)
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-### 4.2 合法转移表
+### 4.2 Valid Transition Table
 
-> 表格列出"从 → 到 / 触发动作 / 触发模块 / 失败处理 / 日志记录"。
+> Table columns: from → to / trigger action / trigger module / failure handling / log fields.
 >
-> 示例：
-> | 从 | 到 | 触发模块 | 触发条件 | 日志字段 |
+> Example:
+> | From | To | Trigger Module | Trigger Condition | Log Fields |
 > |---|---|---|---|---|
-> | `<INITIAL>` | `<STAGE_1>` | worker | 接收后异步启动 | `from_status, to_status, triggered_at, triggered_by` |
-> | `<STAGE_1>` | `<TERMINAL_OK>` | callback | 推送成功 | 同上 |
+> | `<INITIAL>` | `<STAGE_1>` | worker | Async start after receipt | `from_status, to_status, triggered_at, triggered_by` |
+> | `<STAGE_1>` | `<TERMINAL_OK>` | callback | Push succeeded | same as above |
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-### 4.3 死律
+### 4.3 Hard Rules
 
-> 列出禁止行为（终态不可逆 / 跳过状态 / 直接 UPDATE 等）。
+> List prohibited behaviors (terminal states irreversible / skipping states / direct UPDATE, etc.).
 
-## 5. 业务逻辑主流程
+## 5. Business Logic Main Flow
 
-> 按"步骤 N → 步骤 N+1"流水形式描述每一步：输入、查询、过滤、聚合、输出。
-> 涉及 SQL 时给出 SQL 模板（脱敏）。
+> Describe each step in "Step N → Step N+1" sequential form: input, query, filter, aggregation, output.
+> Include SQL templates (redacted) where applicable.
 >
-> 示例：
-> 1. 人员定位：<查询步骤>
-> 2. 数据查询：<查询步骤>
-> 3. 聚合：<聚合规则>
-> 4. 输出：<输出格式>
+> Example:
+> 1. Personnel lookup: <query step>
+> 2. Data query: <query step>
+> 3. Aggregation: <aggregation rules>
+> 4. Output: <output format>
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-## 6. LLM 调用（如适用，对应 CLAUDE.md §24）
+## 6. LLM Calls (if applicable, see CLAUDE.md §24)
 
-### 6.1 触发条件
+### 6.1 Trigger Conditions
 
-> 在哪个阶段调 LLM、用什么开关控制。
+> At which stage the LLM is called and which switch controls it.
 
-### 6.2 prompt 结构
+### 6.2 Prompt Structure
 
-> system prompt 模板（哪些字段进缓存 / 哪些不进） + user message 渲染规则。
+> System prompt template (which fields are cached / which are not) + user message rendering rules.
 
-### 6.3 输入脱敏与 injection 防护
+### 6.3 Input Redaction and Injection Defense
 
-> 必须从 prompt 移除的字段清单 + injection 防护语句。
+> List of fields that must be removed from the prompt + injection defense statements.
 
-### 6.4 输出解析
+### 6.4 Output Parsing
 
-> 期望格式（JSON schema）+ 解析失败重试策略。
+> Expected format (JSON schema) + parse-failure retry strategy.
 
-### 6.5 token 与超时预算
+### 6.5 Token and Timeout Budget
 
-> max_tokens / 单次超时 / 总超时 / 重试次数与退避。
+> max_tokens / per-call timeout / total timeout / retry count and backoff.
 
-> 完整规则见 CLAUDE.md §24。如本项目不调 LLM，可删除整节。
+> Full rules: CLAUDE.md §24. Delete this entire section if the project does not call an LLM.
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-## 7. 回调 / 输出协议（如适用）
+## 7. Callback / Output Protocol (if applicable)
 
-> 成功 payload / 失败 payload / 重试策略 / 幂等期望。
+> Success payload / failure payload / retry strategy / idempotency expectations.
 >
-> 示例：
+> Example:
 > ```json
 > {
 >   "config_id": 123,
 >   "status": "success" | "fail",
 >   "result": {...},
 >   "meta": {...},
->   "error_msg": "..."  // 仅 fail
+>   "error_msg": "..."  // fail only
 > }
 > ```
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-## 8. 错误码与 error_msg 分类
+## 8. Error Codes and error_msg Categories
 
-> 列出所有错误分类 + 用户可见 error_msg 模板。
+> List all error categories with user-visible error_msg templates.
 >
-> 示例：
-> | 分类 | error_msg 模板 | HTTP 状态 |
+> Example:
+> | Category | error_msg Template | HTTP Status |
 > |---|---|---|
-> | 鉴权失败 | `鉴权失败` | 401 |
-> | 字段校验失败 | `字段 X 不合法：<原因>` | 400 |
-> | 任务过期 | `stale task expired` | — |
-> | 内部错误 | `内部错误` | 500 |
+> | Auth failure | `authentication failed` | 401 |
+> | Field validation failure | `field X is invalid: <reason>` | 400 |
+> | Task expired | `stale task expired` | — |
+> | Internal error | `internal error` | 500 |
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-## 9. 鉴权与安全
+## 9. Authentication and Security
 
-> 鉴权方式（Token / 签名 / mTLS）+ 凭证存储 + 日志脱敏要求。
+> Authentication method (token / signature / mTLS) + credential storage + log redaction requirements.
 
-## 10. 技术栈
+## 10. Technology Stack
 
-> 项目允许引入的框架白名单（与 CLAUDE.md §12 配套）。
+> Whitelist of frameworks the project is permitted to introduce (paired with CLAUDE.md §12).
 >
-> 示例：Python 3.12 / <Web 框架> / <ORM> / <LLM SDK>。**白名单之外的框架属 L3 改动**。
+> Example: Python 3.12 / <web framework> / <ORM> / <LLM SDK>. **Any framework outside this whitelist
+> is an L3 change.**
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
 
-## 11. 改动分级（L1 / L2 / L3）
+## 11. Change Tiers (L1 / L2 / L3)
 
-### L1：局部安全改动
+### L1: Local Safe Change
 
-> 满足以下全部时可直接实施：
-> - 改动局限于单个模块
-> - 不改任务状态枚举与转移
-> - 不改对外协议
-> - 不改业务查询主路径
-> - 不改 LLM prompt 结构（如适用）
+> All of the following must be true for direct implementation:
+> - Change is confined to a single module
+> - Does not modify task state enumeration or transitions
+> - Does not modify the external protocol
+> - Does not modify the business query main path
+> - Does not modify LLM prompt structure (if applicable)
 
-### L2：受控改动
+### L2: Controlled Change
 
-> 满足以下任一时必须先输出影响范围说明再实施：
-> - 涉及多个模块
-> - 涉及任务库 schema 字段
-> - 涉及对外字段约束
-> - 涉及 LLM prompt 结构修改
+> Any one of the following requires outputting an impact-scope description before implementation:
+> - Involves multiple modules
+> - Involves task store schema fields
+> - Involves external field constraints
+> - Involves LLM prompt structure modification
 
-### L3：高风险改动
+### L3: High-Risk Change
 
-> 满足以下任一时**先记录到 docs/decisions.md**，未确认前不得实施：
-> - 修改任务状态枚举或合法转移表
-> - 修改主键 / 唯一索引 / 分区策略
-> - 修改对外协议主结构
-> - 替换核心框架（DB 客户端 / 异步框架 / LLM 提供方）
-> - 数据存储读写权限变更
+> Any one of the following requires **recording to `docs/decisions.md` first**; must not be
+> implemented before confirmed:
+> - Modifying task state enumeration or valid transition table
+> - Modifying primary key / unique index / partitioning strategy
+> - Modifying the main structure of the external protocol
+> - Replacing a core framework (DB client / async framework / LLM provider)
+> - Changing data store read/write permissions
 
-## 12. 兼容性与版本演进
+## 12. Compatibility and Version Evolution
 
-> 协议版本字段 / 字段废弃流程 / 客户端升级路径。
+> Protocol version field / field deprecation process / client upgrade path.
 
-## 13. 待联调 / 未确认事项
+## 13. Pending Integration / Unconfirmed Items
 
-> 列出当前文档已知但尚未通过实测验证的点，附验证方式与负责人。
+> List items that are documented but have not yet been verified through actual testing.
+> Include verification method and owner.
 >
-> 示例：
-> - A：外部数据存储 X 表实际字段类型 — 验证方式：DDL 探查 — 状态：待验证
-> - B：第三方 Y 接口字段 N 含义 — 验证方式：联调 — 状态：待验证
+> Example:
+> - A: Actual field types in external data store X table — verification: DDL inspection — status: pending
+> - B: Meaning of field N in third-party Y interface — verification: integration test — status: pending
 
-<!-- 删除以上示例后填写本项目内容 -->
+<!-- DELETE the example above and fill in this project's content -->
