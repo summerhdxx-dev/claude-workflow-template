@@ -6,6 +6,8 @@ All notable changes to this template are recorded here. The format follows
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-06-04
+
 ### Added
 - Open-source setup: MIT `LICENSE`, `CONTRIBUTING.md`, issue / PR templates
 - `examples/sample-comment-service/`: a fully filled-in reference sample (comment-generation service)
