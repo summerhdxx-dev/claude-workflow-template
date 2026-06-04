@@ -6,6 +6,12 @@ All notable changes to this template are recorded here. The format follows
 
 ## [Unreleased]
 
+### Added
+- Community health files: `CODE_OF_CONDUCT.md`, `SECURITY.md`
+- `.editorconfig` for consistent formatting across editors
+- Link-check CI workflow (`.github/workflows/link-check.yml`) to catch dead links and broken cross-references
+- README dynamic badges (release version, stars)
+
 ## [1.0.0] - 2026-06-04
 
 ### Added

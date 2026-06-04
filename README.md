@@ -4,6 +4,8 @@
 
 > A stack-agnostic, documentation-first workflow template for AI collaboration — it turns the AI from "improvises and writes a pile of code" into a constrained engineering teammate that ships maintainable MVPs reliably.
 
+[![Release](https://img.shields.io/github/v/release/summerhdxx-dev/claude-workflow-template?color=success)](https://github.com/summerhdxx-dev/claude-workflow-template/releases)
+[![Stars](https://img.shields.io/github/stars/summerhdxx-dev/claude-workflow-template)](https://github.com/summerhdxx-dev/claude-workflow-template/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 ![Stack agnostic](https://img.shields.io/badge/stack-agnostic-blue.svg)

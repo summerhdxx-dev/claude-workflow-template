@@ -4,6 +4,8 @@
 
 > 一套与技术栈无关的「AI 协作 + 文档先行」工作流模板,把 AI 从「自由发挥写一堆」约束成「受规则约束、稳定交付可维护 MVP」的开发成员。
 
+[![Release](https://img.shields.io/github/v/release/summerhdxx-dev/claude-workflow-template?color=success)](https://github.com/summerhdxx-dev/claude-workflow-template/releases)
+[![Stars](https://img.shields.io/github/stars/summerhdxx-dev/claude-workflow-template)](https://github.com/summerhdxx-dev/claude-workflow-template/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.zh-CN.md)
 ![Stack agnostic](https://img.shields.io/badge/stack-agnostic-blue.svg)
